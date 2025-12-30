@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class UsuarioRequest {
+public class UsuarioUpdateRequest {
 
     @NotNull(message = "Nombre es requerido.")
     @NotBlank(message = "Nombre es requerido.")
@@ -16,10 +16,8 @@ public class UsuarioRequest {
     @NotBlank(message = "Usuario es requerido.")
     private String usuario;
 
-
-    @NotNull(message = "Clave es requerido.")
-    @NotBlank(message = "Clave es requerido.")
     private String clave;
+
 
     private String email;
 

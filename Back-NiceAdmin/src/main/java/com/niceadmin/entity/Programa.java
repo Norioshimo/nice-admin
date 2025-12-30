@@ -31,6 +31,7 @@ public class Programa {
 
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
     private Date createAt;
 
     @Column(name = "update_at")

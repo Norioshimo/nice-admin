@@ -1,5 +1,6 @@
 package com.niceadmin.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -31,6 +32,7 @@ public class Usuario {
 
     @Size(max = 255)
     @NotNull
+    @JsonIgnore
     private String clave;
 
     @Size(max = 150)
@@ -39,6 +41,7 @@ public class Usuario {
 
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
     private Date createAt;
 
     @Column(name = "update_at")

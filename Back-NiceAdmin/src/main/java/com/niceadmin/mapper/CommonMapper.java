@@ -9,6 +9,5 @@ public interface CommonMapper<E,R>{
 
     Object toDto(E entity);
 
-    void updateEntityFromDto(R dto, @MappingTarget E entity);
 
 }

@@ -59,21 +59,6 @@ public class CommonController<E, S extends CommonService<E, F>, R, F> {
         return ResponseEntity.status(HttpStatus.OK).body(entityDb);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> editar(@Valid @RequestBody R request, @PathVariable(name = "id") Long id) {
-        Optional<E> optional = service.findById(id);
-
-        if (optional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        E eDb = optional.get();
-
-        mapper.updateEntityFromDto(request, eDb);
-
-        return ResponseEntity.status(HttpStatus.OK).body(service.save(eDb));
-    }
-
     /*
     Es practico para algo muy personalizado.
     Para user, se debe activar el Binding Eje: @Valid @RequestBody Programa programa, BindingResult result
