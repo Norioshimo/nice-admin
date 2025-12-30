@@ -1,10 +1,7 @@
 package com.niceadmin.services.imp;
 
 import com.niceadmin.dto.filter.ProgramasFilter;
-import com.niceadmin.dto.request.ProgramaRequest;
-import com.niceadmin.dto.response.ProgramaResponse;
 import com.niceadmin.entity.Programa;
-import com.niceadmin.mapper.ProgramaMapper;
 import com.niceadmin.repository.ProgramaRepository;
 import com.niceadmin.services.ProgramaService;
 import com.niceadmin.specification.ProgramaSpecification;
@@ -25,10 +22,12 @@ public class ProgramaServiceImp implements ProgramaService {
     @Autowired
     private ProgramaRepository repository;
 
-    public Page<Programa> findAll(Pageable pageable, ProgramasFilter filter) {
-        Specification<Programa> spec = ProgramaSpecification.filtrar(filter);
 
-        return repository.findAll(pageable);
+    @Override
+    public Page<Programa> findAll(Pageable pageable, ProgramasFilter filter) {
+        log.info("Recuperar lista de programas.");
+        Specification<Programa> spec = ProgramaSpecification.filtrar(filter);
+        return repository.findAll(spec, pageable);
     }
 
     @Transactional
@@ -40,6 +39,7 @@ public class ProgramaServiceImp implements ProgramaService {
     public Optional<Programa> findById(Long id) {
         return repository.findById(id);
     }
+
 
     @Override
     public void deleteById(Long id) {

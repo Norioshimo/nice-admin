@@ -1,6 +1,5 @@
 package com.niceadmin.entity;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,7 +8,7 @@ import lombok.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "programas")
+@Table(name = "usuarios")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,16 +16,25 @@ import java.util.Date;
 @Builder
 @ToString()
 @EqualsAndHashCode(of = {"id"})
-public class Programa {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @NotNull
-    @Size(max = 50)
+    @Size(max = 100)
     private String nombre;
+
+    @Size(max = 50)
+    @NotNull
+    private String usuario;
+
+    @Size(max = 255)
+    @NotNull
+    private String clave;
+
+    @Size(max = 150)
+    private String email;
 
 
     @Column(name = "create_at")
@@ -35,7 +43,7 @@ public class Programa {
 
     @Column(name = "update_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updateAt;
+    private Date updataAt;
 
 
     @PrePersist
@@ -45,8 +53,6 @@ public class Programa {
 
     @PreUpdate
     public void preUpdate() {
-        this.updateAt = new Date();
+        this.updataAt = new Date();
     }
-
-
 }
