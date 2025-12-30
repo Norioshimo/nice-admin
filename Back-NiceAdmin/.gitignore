@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+## Volumenes de Docker
+data_postgres/
+data_pgadmin/
