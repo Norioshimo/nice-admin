@@ -5,6 +5,12 @@ spring:
   application:
     name: nice-admin
 
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/db_nice_admin

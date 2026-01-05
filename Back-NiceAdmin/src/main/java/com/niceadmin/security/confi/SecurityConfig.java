@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/programas/**").authenticated()
                         .requestMatchers("/api/usuarios/**").authenticated()
                         .requestMatchers("/api/roles/**").authenticated()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()// <-  dejar pasar al dispatcher para 404
                 )
                 .addFilterBefore(
                         jwtAuthFilter,
