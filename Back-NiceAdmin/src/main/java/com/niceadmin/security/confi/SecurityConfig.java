@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()  // login, registro
                         .requestMatchers("/api/programas/**").authenticated()
                         .requestMatchers("/api/usuarios/**").authenticated()
+                        .requestMatchers("/api/roles/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(
