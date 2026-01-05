@@ -1,4 +1,4 @@
-package com.niceadmin.confi;
+package com.niceadmin.security.confi;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

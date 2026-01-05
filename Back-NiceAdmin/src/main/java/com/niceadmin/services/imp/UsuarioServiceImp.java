@@ -43,4 +43,9 @@ public class UsuarioServiceImp implements UsuarioService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public Optional<Usuario>buscarUsurios(String usuario){
+        return repository.buscarUsurios(usuario);
+    }
 }
