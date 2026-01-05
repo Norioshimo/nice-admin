@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -27,41 +28,40 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private UsuarioService usuarioService;
 
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain
-    ) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
+            throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
+        String token = null;
+        String username = null;
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+            try {
+                username = jwtService.extraerUsername(token);
+            } catch (Exception e) {
+                // Si el token es inválido, lanzar AuthenticationException
+                throw new BadCredentialsException("Token JWT inválido");
+            }
         }
 
-        final String jwt = authHeader.substring(7);
-        final String username = jwtService.extraerUsername(jwt);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            Optional<Usuario> userDetails = usuarioService.buscarUsurios(username);
 
-        if (username != null
-                && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            Optional<Usuario> usuario =  usuarioService.buscarUsurios(username);
-
-            if (jwtService.esTokenValido(jwt, usuario.get())) {
-
+            if (jwtService.esTokenValido(token, userDetails.get())) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
-                                usuario,
+                                userDetails,
                                 null,
                                 null
                         );
 
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+            } else {
+                throw new BadCredentialsException("Token JWT inválido");
             }
         }
 

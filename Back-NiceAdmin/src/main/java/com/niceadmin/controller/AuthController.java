@@ -1,6 +1,7 @@
 package com.niceadmin.controller;
 
 import com.niceadmin.dto.request.LoginRequest;
+import com.niceadmin.dto.response.ApiResponse;
 import com.niceadmin.dto.response.LoginResponse;
 import com.niceadmin.entity.Programa;
 import com.niceadmin.entity.Usuario;
@@ -35,13 +36,15 @@ public class AuthController {
         Optional<Usuario> optional = usuarioService.buscarUsurios(request.getUsuario());
 
         if (optional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe el usuario");
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(401, "No existe el usuario", null)
+            );
         }
 
         Usuario eDb = optional.get();
 
-        if(!passwordEncoder.matches(request.getClave(),eDb.getClave())){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Clave invalido");
+        if (!passwordEncoder.matches(request.getClave(), eDb.getClave())) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(401, "Clave Invalido", null));
         }
 
 
@@ -52,6 +55,6 @@ public class AuthController {
                 .build();
 
 
-        return ResponseEntity.status(HttpStatus.OK).body(lr);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, "Bienvenido/a " + eDb.getNombre(), lr));
     }
 }

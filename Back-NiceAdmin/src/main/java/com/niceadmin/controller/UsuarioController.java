@@ -3,6 +3,7 @@ package com.niceadmin.controller;
 import com.niceadmin.dto.filter.UsuariosFilter;
 import com.niceadmin.dto.request.UsuarioRequest;
 import com.niceadmin.dto.request.UsuarioUpdateRequest;
+import com.niceadmin.dto.response.ApiResponse;
 import com.niceadmin.entity.Usuario;
 import com.niceadmin.mapper.UsuarioMapper;
 import com.niceadmin.services.UsuarioService;
@@ -40,7 +41,7 @@ public class UsuarioController extends CommonController<Usuario, UsuarioService,
 
         Usuario entityDb = service.save(entity);
 
-        return ResponseEntity.status(HttpStatus.OK).body(entityDb);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, "Registro creado con éxito", entity));
     }
 
     @PutMapping("/{id}")
@@ -48,7 +49,8 @@ public class UsuarioController extends CommonController<Usuario, UsuarioService,
         Optional<Usuario> optional = service.findById(id);
 
         if (optional.isEmpty()) {
-            return ResponseEntity.notFound().build();
+
+            return ResponseEntity.ok(new ApiResponse<>(401, "No existe el registro para editar ", null));
         }
 
         Usuario eDb = optional.get();
@@ -61,7 +63,11 @@ public class UsuarioController extends CommonController<Usuario, UsuarioService,
 
         mapper.updateEntityFromDto(request, eDb);
 
-        return ResponseEntity.status(HttpStatus.OK).body(service.save(eDb));
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(200, "Registro actualizado con éxito", service.save(eDb))
+        );
     }
 
 

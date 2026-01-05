@@ -1,5 +1,6 @@
 package com.niceadmin.common.exception;
 
+import com.niceadmin.dto.response.ApiResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -16,35 +17,36 @@ import java.util.Map;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidation(
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleValidation(
             MethodArgumentNotValidException ex) {
 
         Map<String, String> errors = new HashMap<>();
-
         ex.getBindingResult().getFieldErrors()
                 .forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
 
-        return ResponseEntity.badRequest().body(errors);
+        return ResponseEntity.badRequest()
+                .body(new ApiResponse<>(400, "Errores de validación", errors));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleNotFound(EntityNotFoundException ex) {
+    public ResponseEntity<ApiResponse<Object>> handleNotFound(EntityNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
+                .body(new ApiResponse<>(404, ex.getMessage(), null));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Map<String, String>> handleDataIntegrity(
+    public ResponseEntity<ApiResponse<Object>> handleDataIntegrity(
             DataIntegrityViolationException ex) {
 
         Map<String, String> error = new HashMap<>();
         error.put("error", "Violación de integridad de datos");
 
-        return ResponseEntity.badRequest().body(error);
+        return ResponseEntity.badRequest()
+                .body(new ApiResponse<>(400, "Error de integridad", error));
     }
 
     @ExceptionHandler(TransactionSystemException.class)
-    public ResponseEntity<Map<String, String>> handleTransactionException(
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleTransactionException(
             TransactionSystemException ex) {
 
         Throwable cause = ex.getRootCause();
@@ -52,20 +54,20 @@ public class ApiExceptionHandler {
         if (cause instanceof jakarta.validation.ConstraintViolationException violationEx) {
 
             Map<String, String> errors = new HashMap<>();
-
             violationEx.getConstraintViolations().forEach(v -> {
                 String field = v.getPropertyPath().toString();
                 String message = v.getMessage();
                 errors.put(field, message);
             });
 
-            return ResponseEntity.badRequest().body(errors);
+            return ResponseEntity.badRequest()
+                    .body(new ApiResponse<>(400, "Errores de validación", errors));
         }
 
         Map<String, String> error = new HashMap<>();
         error.put("error", "Error de transacción");
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(error);
+                .body(new ApiResponse<>(500, "Error de transacción", error));
     }
 }

@@ -1,5 +1,6 @@
 package com.niceadmin.controller;
 
+import com.niceadmin.dto.response.ApiResponse;
 import com.niceadmin.mapper.CommonMapper;
 import com.niceadmin.services.CommonService;
 import jakarta.validation.Valid;
@@ -24,16 +25,16 @@ public class CommonController<E, S extends CommonService<E, F>, R, F> {
 
     @GetMapping("/pagina")
     public ResponseEntity<?> listar(Pageable pageable, F filter) {
-        return ResponseEntity.ok(service.findAll(pageable, filter));
+        return ResponseEntity.ok(new ApiResponse<>(200, "Lista de usuarios", service.findAll(pageable, filter)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> ver(@PathVariable(name = "id") Long id) {
         Optional<E> optional = service.findById(id);
         if (optional.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(new ApiResponse<>(401, "Registro con el id " + id + " no encontado", null));
         } else {
-            return ResponseEntity.ok().body(optional.get());
+            return ResponseEntity.ok().body(new ApiResponse<>(200, "Registro con el id " + id + " no encontado", optional.get()));
         }
     }
 
@@ -41,11 +42,10 @@ public class CommonController<E, S extends CommonService<E, F>, R, F> {
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
         Optional<E> optional = service.findById(id);
         if (optional.isEmpty()) {
-            log.info("No existe id " + id);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(new ApiResponse<>(401, "Registro con el id " + id + " no encontado para eliminar", null));
         } else {
             service.deleteById(id);
-            return ResponseEntity.ok().body(optional.get());
+            return ResponseEntity.ok(new ApiResponse<>(200, "Registro con el id " + id + " Eliminado", null));
         }
     }
 
@@ -56,7 +56,8 @@ public class CommonController<E, S extends CommonService<E, F>, R, F> {
 
         E entityDb = service.save(entity);
 
-        return ResponseEntity.status(HttpStatus.OK).body(entityDb);
+
+        return ResponseEntity.ok(new ApiResponse<>(200, "Registro con el id creado con exito", entityDb));
     }
 
     /*
