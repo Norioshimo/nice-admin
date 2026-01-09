@@ -7,7 +7,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
-public interface RolMapper extends CommonMapper<Rol, RolRequest>{
+public interface RolMapper {
+
+    Rol toEntity(RolRequest dto);
+
+    Object toDto(Rol entity);
+
 
     void updateEntityFromDto(RolRequest dto, @MappingTarget Rol entity);
 

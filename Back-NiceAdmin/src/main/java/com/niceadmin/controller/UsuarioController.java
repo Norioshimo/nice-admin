@@ -10,6 +10,7 @@ import com.niceadmin.services.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,32 +22,46 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/usuarios")
 @Slf4j
-public class UsuarioController extends CommonController<Usuario, UsuarioService, UsuarioRequest, UsuariosFilter> {
-
-
+public class UsuarioController {
 
     @Autowired
     private UsuarioMapper mapper;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UsuarioService usuarioService;
 
 
-    @Override
+    @GetMapping("/pagina")
+    public ResponseEntity<?> listar(Pageable pageable, UsuariosFilter filter) {
+        return ResponseEntity.ok(new ApiResponse<>(200, "Lista de usuarios", usuarioService.findAll(pageable, filter)));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> ver(@PathVariable(name = "id") Long id) {
+        Optional<Usuario> optional = usuarioService.findById(id);
+        if (optional.isEmpty()) {
+            return ResponseEntity.ok(new ApiResponse<>(401, "Registro con el id " + id + " no encontado", null));
+        } else {
+            return ResponseEntity.ok().body(new ApiResponse<>(200, "Registro con el id " + id + " encontado", optional.get()));
+        }
+    }
+
+    @PostMapping
     public ResponseEntity<?> crear(@Valid @RequestBody UsuarioRequest request) {
 
         Usuario entity = mapper.toEntity(request);
 
         entity.setClave(passwordEncoder.encode(entity.getClave()));
 
-        Usuario entityDb = service.save(entity);
+        Usuario entityDb = usuarioService.save(entity);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, "Registro creado con éxito", entity));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editar(@Valid @RequestBody UsuarioUpdateRequest request, @PathVariable(name = "id") Long id) {
-        Optional<Usuario> optional = service.findById(id);
+        Optional<Usuario> optional = usuarioService.findById(id);
 
         if (optional.isEmpty()) {
 
@@ -57,18 +72,29 @@ public class UsuarioController extends CommonController<Usuario, UsuarioService,
 
         if (request.getClave() != null) {
             request.setClave(passwordEncoder.encode(request.getClave()));
-        }else{
+        } else {
             request.setClave(eDb.getClave());
         }
 
         mapper.updateEntityFromDto(request, eDb);
 
 
-
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(200, "Registro actualizado con éxito", service.save(eDb))
+                new ApiResponse<>(200, "Registro actualizado con éxito", usuarioService.save(eDb))
         );
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        Optional<Usuario> optional = usuarioService.findById(id);
+        if (optional.isEmpty()) {
+            return ResponseEntity.ok(new ApiResponse<>(401, "Registro con el id " + id + " no encontado para eliminar", null));
+        } else {
+            usuarioService.deleteById(id);
+            return ResponseEntity.ok(new ApiResponse<>(200, "Registro con el id " + id + " Eliminado", null));
+        }
+    }
+
 
 
 }

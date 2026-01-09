@@ -3,7 +3,6 @@ package com.niceadmin.controller;
 import com.niceadmin.dto.request.LoginRequest;
 import com.niceadmin.dto.response.ApiResponse;
 import com.niceadmin.dto.response.LoginResponse;
-import com.niceadmin.entity.Programa;
 import com.niceadmin.entity.Usuario;
 import com.niceadmin.security.jwt.JwtService;
 import com.niceadmin.services.UsuarioService;
@@ -47,13 +46,11 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(401, "Clave Invalido", null));
         }
 
-
         String token = jwtService.generarToken(eDb);
 
         LoginResponse lr = LoginResponse.builder()
                 .token(token)
                 .build();
-
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, "Bienvenido/a " + eDb.getNombre(), lr));
     }

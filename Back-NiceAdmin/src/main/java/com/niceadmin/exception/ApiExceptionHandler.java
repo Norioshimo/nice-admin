@@ -1,4 +1,4 @@
-package com.niceadmin.common.exception;
+package com.niceadmin.exception;
 
 import com.niceadmin.dto.response.ApiResponse;
 import jakarta.persistence.EntityNotFoundException;

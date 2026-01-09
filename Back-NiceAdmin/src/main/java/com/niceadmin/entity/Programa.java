@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -17,7 +18,7 @@ import java.util.Date;
 @Builder
 @ToString()
 @EqualsAndHashCode(of = {"id"})
-public class Programa {
+public class Programa implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

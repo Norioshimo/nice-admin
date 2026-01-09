@@ -21,5 +21,8 @@ public class UsuarioUpdateRequest {
 
     private String email;
 
+    //@NotNull(message = "Rol es requerido.")
+    //@NotBlank(message = "Rol es requerido.")
+    private Long rolId;
 
 }

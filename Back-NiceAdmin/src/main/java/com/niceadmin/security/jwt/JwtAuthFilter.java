@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -29,49 +28,73 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private UsuarioService usuarioService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            // NO token → dejar pasar para que el DispatcherServlet pueda manejar 404
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = null;
-        String username = null;
+        String token = authHeader.substring(7);
+        String username;
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
-            try {
-                username = jwtService.extraerUsername(token);
-            } catch (Exception e) {
-                // Si el token es inválido, lanzar AuthenticationException
-                throw new BadCredentialsException("Token JWT inválido");
-            }
+        try {
+            username = jwtService.extraerUsername(token);
+        } catch (Exception e) {
+            escribirError(response, "Token JWT inválido");
+            return;
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            Optional<Usuario> userDetails = usuarioService.buscarUsurios(username);
-
-            if (jwtService.esTokenValido(token, userDetails.get())) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,  // Usuario real
-                                null,
-                                Collections.emptyList() // sin roles, evita errores
-                        );
-
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            } else {
-                throw new BadCredentialsException("Token JWT inválido");
-            }
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            filterChain.doFilter(request, response);
+            return;
         }
+
+        Optional<Usuario> usuarioOpt = usuarioService.buscarUsurios(username);
+
+        if (usuarioOpt.isEmpty()) {
+            escribirError(response, "Usuario no encontrado");
+            return;
+        }
+
+        Usuario usuario = usuarioOpt.get();
+
+        if (!jwtService.esTokenValido(token, usuario)) {
+            escribirError(response, "Token JWT inválido o expirado");
+            return;
+        }
+
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(
+                        usuario,          // ✔ Usuario real
+                        null,
+                        Collections.emptyList()
+                );
+
+        authToken.setDetails(
+                new WebAuthenticationDetailsSource().buildDetails(request)
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
+    }
+
+    private void escribirError(HttpServletResponse response, String mensaje) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.getWriter().write("""
+            {
+              "status": 401,
+              "message": "%s",
+              "data": null
+            }
+        """.formatted(mensaje));
     }
 }

@@ -7,7 +7,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
-public interface ProgramaMapper extends CommonMapper<Programa, ProgramaRequest>{
+public interface ProgramaMapper {
+
+    Programa toEntity(ProgramaRequest dto);
+
+    Object toDto(Programa entity);
 
     void updateEntityFromDto(ProgramaRequest dto, @MappingTarget Programa entity);
 
