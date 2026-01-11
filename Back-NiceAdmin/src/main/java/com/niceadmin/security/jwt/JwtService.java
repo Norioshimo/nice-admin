@@ -25,6 +25,8 @@ public class JwtService {
     public String generarToken(Usuario usuario) {
         return Jwts.builder()
                 .setSubject(usuario.getUsuario())
+                .claim("userId", usuario.getId())
+                .claim("rolId", usuario.getRolId().getId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + props.getExpiration()))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -32,6 +34,13 @@ public class JwtService {
     }
 
 
+    public Long extrarUserId(String token) {
+        return extraerClaims(token).get("userId", Long.class);
+    }
+
+    public Long extrarRolId(String token) {
+        return extraerClaims(token).get("rolId", Long.class);
+    }
 
     public String extraerUsername(String token) {
         return extraerClaims(token).getSubject();

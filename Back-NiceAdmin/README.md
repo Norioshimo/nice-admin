@@ -17,3 +17,22 @@ docker compose up -d
 ```
 mvn spring-boot:run
 ```
+
+## JWT
+Los tokens están firmados con HMAC SHA-256 usando una clave secreta de la aplicación: El token y expiration se configura en el application.yml.
+
+Ejemplo de Token generado
+
+```
+{
+    "sub": "admin",
+    "userId": 1,
+    "rolId": 2,
+    "iat": 1768138705,
+    "exp": 1768142305
+}
+```
+
+
+
+
