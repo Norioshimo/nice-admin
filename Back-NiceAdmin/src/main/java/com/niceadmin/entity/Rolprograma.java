@@ -1,43 +1,25 @@
 package com.niceadmin.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "rolesprogramas")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(of = {"id"})
-public class Usuario implements Serializable {
+public class Rolprograma implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Size(max = 100)
-    private String nombre;
-
-    @Size(max = 50)
-    @NotNull(message = "Usuario es requerido")
-    private String usuario;
-
-    @Size(max = 255)
-    @NotNull(message = "Clave es requerido")
-    @JsonIgnore
-    private String clave;
-
-    @Size(max = 150)
-    private String email;
 
 
     @Column(name = "create_at")
@@ -55,6 +37,12 @@ public class Usuario implements Serializable {
     //@JsonBackReference //indica la parte “hija” que se ignora al serializar, evitando el bucle.
     private Rol rolId;
 
+    @JoinColumn(name = "programa_id",referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    @NotNull(message = "Programa es requerido")
+    //@JsonBackReference //indica la parte “hija” que se ignora al serializar, evitando el bucle.
+    private Programa programaId;
+
 
     @PrePersist
     public void prePersist() {
@@ -65,4 +53,6 @@ public class Usuario implements Serializable {
     public void preUpdate() {
         this.updataAt = new Date();
     }
+
+
 }

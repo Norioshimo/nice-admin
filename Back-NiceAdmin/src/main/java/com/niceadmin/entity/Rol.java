@@ -1,7 +1,6 @@
 package com.niceadmin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,7 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString()
 @EqualsAndHashCode(of = {"id"})
 public class Rol implements Serializable {
 
@@ -43,9 +41,15 @@ public class Rol implements Serializable {
     private Date updateAt;
 
 
-    //@OneToMany(mappedBy = "rolId")
+    @OneToMany(mappedBy = "rolId",cascade = CascadeType.ALL)
     //@JsonManagedReference //indica la parte “padre” que se serializa normalmente.
-    //private List<Usuario> usuarioList;
+    @JsonIgnore
+    private List<Usuario> usuarioList;
+
+
+    @OneToMany(mappedBy = "rolId",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
+    private List<Rolprograma> rolesprogramasList;
 
 
     @PrePersist
