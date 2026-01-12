@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import { useAuthStore } from "../modulo/auth/store/auth.store";
 
 export const Header = () => {
+
+  const {logout}=useAuthStore();
+
   const [toggle, setToggle] = useState(false);
 
   const handleToggle = () => {
@@ -72,6 +76,7 @@ export const Header = () => {
                   <Link
                     className="dropdown-item d-flex align-items-center"
                     to={'/auth/login'}
+                    onClick={logout}
                   >
                     <i className="bi bi-box-arrow-right"></i>
                     <span>Cerrar Sesión</span>

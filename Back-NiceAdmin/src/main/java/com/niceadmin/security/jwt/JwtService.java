@@ -1,5 +1,6 @@
 package com.niceadmin.security.jwt;
 
+import com.niceadmin.dto.response.LoginResponse;
 import com.niceadmin.entity.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -22,6 +23,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(props.getSecret().getBytes(StandardCharsets.UTF_8));
     }
 
+    // Genera token
     public String generarToken(Usuario usuario) {
         return Jwts.builder()
                 .setSubject(usuario.getUsuario())
@@ -34,6 +36,7 @@ public class JwtService {
     }
 
 
+    // Extraer datos de token
     public Long extrarUserId(String token) {
         return extraerClaims(token).get("userId", Long.class);
     }
@@ -46,6 +49,7 @@ public class JwtService {
         return extraerClaims(token).getSubject();
     }
 
+    // Validadores de token
     public boolean esTokenValido(String token, Usuario usuario) {
         final String username = extraerUsername(token);
         return username.equals(usuario.getUsuario())

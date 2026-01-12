@@ -2,8 +2,7 @@
 import { Outlet } from "react-router";
 import { Footer,Header ,Sidebar} from "../../components"; 
 
-const AdminLayout = () => {
-  console.log("AdminLayout rendered");
+const AdminLayout = () => { 
   return (
     <>
       <Header />

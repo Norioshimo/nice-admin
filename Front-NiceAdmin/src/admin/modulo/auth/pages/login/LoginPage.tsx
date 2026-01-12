@@ -1,6 +1,44 @@
+import { useState, type FormEvent } from "react";
 import { Footer } from "../../../../components/Footer";
+import { Loading } from "../../../../components";
+import { useAuthStore } from "../../store/auth.store";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+  const { login } = useAuthStore();
+
+  const [isPosting, setIsPosting] = useState(false);
+
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(`Enviar datos al backend`);
+
+    setIsPosting(true);
+
+    const formData = new FormData(event.target as HTMLFormElement);
+    const usuario = formData.get("usuario") as string;
+    const clave = formData.get("clave") as string;
+
+    console.log(`usuario:  ${usuario}. clave: ${clave}`);
+
+    const isValid = await login(usuario, clave);
+    console.log(`isValid: ${isValid}`);
+
+    if (isValid) {
+      Swal.fire({
+        text: "Bienvenido/a",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        navigate("/");
+      });
+    }
+
+    setIsPosting(false);
+  };
+
   return (
     <>
       <div className="container">
@@ -25,22 +63,22 @@ export const LoginPage = () => {
                         LOGIN
                       </h5>
                       <p className="text-center small">
-                        Template de AdminNice - Iniciar sesión para continuar
+                        Template de AdminNice <br /> Iniciar sesión para
+                        continuar
                       </p>
                     </div>
 
-                    <form className="row g-3 needs-validation">
+                    <form
+                      className="row g-3 needs-validation"
+                      onSubmit={handleLogin}
+                    >
                       <div className="col-12">
-                        <label  className="form-label">
-                          Usuario
-                        </label>
+                        <label className="form-label">Usuario</label>
                         <div className="input-group has-validation">
-                          
                           <input
                             type="text"
-                            name="username"
+                            name="usuario"
                             className="form-control"
-                            id="yourUsername"
                             required
                             placeholder="Ingrese su usuario"
                           />
@@ -51,14 +89,11 @@ export const LoginPage = () => {
                       </div>
 
                       <div className="col-12">
-                        <label className="form-label">
-                          Contraseña
-                        </label>
+                        <label className="form-label">Contraseña</label>
                         <input
                           type="password"
-                          name="password"
+                          name="clave"
                           className="form-control"
-                          id="yourPassword"
                           placeholder="Ingrese su clave"
                           required
                         />
@@ -66,13 +101,16 @@ export const LoginPage = () => {
                           Please enter your password!
                         </div>
                       </div>
- 
+
                       <div className="col-12">
-                        <button className="btn btn-primary w-100" type="submit">
-                          Login
+                        <button
+                          className="btn btn-primary w-100"
+                          type="submit"
+                          disabled={isPosting}
+                        >
+                          <Loading isPosting={isPosting} texto={"Login"} />
                         </button>
                       </div>
-                      
                     </form>
                   </div>
                 </div>
