@@ -5,8 +5,9 @@
 - Bootstrap Icon
 - React Router
 - React Tanstack Query
+- React Form Hook
 - Axios
-- Sonner
+- SweetAlert
 - React 19
 - Zod
 - Zustand

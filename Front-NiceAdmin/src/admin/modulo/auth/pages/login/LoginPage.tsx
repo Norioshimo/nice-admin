@@ -2,11 +2,9 @@ import { useState, type FormEvent } from "react";
 import { Footer } from "../../../../components/shared/Footer";
 import { Loading } from "../../../../components";
 import { useAuthStore } from "../../store/auth.store";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router";
+import Swal from "sweetalert2"; 
 
 export const LoginPage = () => {
-  const navigate = useNavigate();
   const { login } = useAuthStore();
 
   const [isPosting, setIsPosting] = useState(false);

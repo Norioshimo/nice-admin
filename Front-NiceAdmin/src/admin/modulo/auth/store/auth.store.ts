@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import type { Usuario } from "../../../interfaces";
 import { loginAction } from "../actions/login.action";
-import Swal from "sweetalert2";
 import { checkAuthAction } from "../actions/check-auth.action";
 
 type AuthStatus = 'authenticated' | 'not-authenticated' | 'checking';
@@ -20,7 +19,7 @@ interface AuthState {
     checkAuthStatus: () => Promise<boolean>;
 }
 
-export const useAuthStore = create<AuthState>()((set, get) => ({
+export const useAuthStore = create<AuthState>()((set, _) => ({
     // Implementación del store
     user: null,
     token: null,

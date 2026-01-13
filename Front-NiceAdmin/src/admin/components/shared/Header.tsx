@@ -3,8 +3,7 @@ import { Link } from "react-router";
 import { useAuthStore } from "../../modulo/auth/store/auth.store";
 
 export const Header = () => {
-
-  const {logout}=useAuthStore();
+  const { logout, user } = useAuthStore();
 
   const [toggle, setToggle] = useState(false);
 
@@ -40,33 +39,27 @@ export const Header = () => {
                 href="#"
                 data-bs-toggle="dropdown"
               >
-                <img
-                  src="assets/img/profile-img.jpg"
-                  alt="Profile"
-                  className="rounded-circle"
-                />
                 <span className="d-none d-md-block dropdown-toggle ps-2">
-                  K. Anderson
+                  {user?.usuario}
                 </span>
               </a>
 
               <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                 <li className="dropdown-header">
-                  <h6>Kevin Anderson</h6>
-                  <span>Web Designer</span>
+                  <h6>{user?.nombre}</h6>
                 </li>
                 <li>
                   <hr className="dropdown-divider" />
                 </li>
 
                 <li>
-                  <a
+                  <Link
+                    to={"seguridad/perfil"}
                     className="dropdown-item d-flex align-items-center"
-                    href="users-profile.html"
                   >
                     <i className="bi bi-person"></i>
-                    <span>My Profile</span>
-                  </a>
+                    <span>Mi Perfil</span>
+                  </Link>
                 </li>
                 <li>
                   <hr className="dropdown-divider" />
@@ -75,7 +68,7 @@ export const Header = () => {
                 <li>
                   <Link
                     className="dropdown-item d-flex align-items-center"
-                    to={'/auth/login'}
+                    to={"/auth/login"}
                     onClick={logout}
                   >
                     <i className="bi bi-box-arrow-right"></i>
