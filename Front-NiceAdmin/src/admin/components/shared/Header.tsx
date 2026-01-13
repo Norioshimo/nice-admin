@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { useAuthStore } from "../modulo/auth/store/auth.store";
+import { useAuthStore } from "../../modulo/auth/store/auth.store";
 
 export const Header = () => {
 

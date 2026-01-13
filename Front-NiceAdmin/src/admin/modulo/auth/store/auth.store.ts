@@ -15,7 +15,7 @@ interface AuthState {
     // Getters 
 
     // Actions
-    login: (user: string, clave: string) => Promise<boolean>;
+    login: (user: string, clave: string) => Promise<Map<string, any>>;
     logout: () => void;
     checkAuthStatus: () => Promise<boolean>;
 }
@@ -32,23 +32,20 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     login: async (user: string, clave: string) => {
         console.log({ user, clave });
 
+        const returnData = new Map();
         try {
+ 
             const data = await loginAction(user, clave);
             console.log(data)
+            returnData.set("message", data.message);
+ 
+            if (data.status != 200) { 
+                returnData.set("valido", false);
 
-
-            let valido = false;
-            if (data.status != 200) {
-                Swal.fire({
-                    title: "Error de Autenticación",
-                    text: data.message,
-                    icon: "error",
-                });
-                valido = false;
                 localStorage.removeItem('token');
                 set({ user: null, token: null, authStatus: 'not-authenticated' });
             } else {
-                valido = true;
+                returnData.set("valido", true);
                 localStorage.setItem('token', data.data.token);
                 set({
                     user: {// Se guarda el objeto de usuario
@@ -59,12 +56,13 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
                     token: data.data.token, authStatus: 'authenticated'
                 });
             }
-            return valido;
+            return returnData;
         } catch (error) {
+            returnData.set("valido", false);
             console.error(`Error inesperado:`, error)
             localStorage.removeItem('token');
             set({ user: null, token: null, authStatus: 'not-authenticated' });
-            return false;
+            return returnData;
         }
     },
 
@@ -88,9 +86,10 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
                 token: data.token,
                 authStatus: 'authenticated',
             });
-            return true; 
+            console.log('authenticated')
+            return true;
         } catch (error) {
-            console.log('no estás autenticado')
+            console.log('no estás autenticado. not-authenticated')
             set({
                 user: undefined,
                 token: undefined,

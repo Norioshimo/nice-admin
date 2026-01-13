@@ -1,10 +1,11 @@
-export* from "./utils/CustomFullScreenLoading";
+ 
+
+export * from "./utils/CustomFullScreenLoading";
 export * from "./utils/Loading";
 
-export * from "./Footer";
-export * from "./Header";
-export * from "./Sidebar";
-export * from "./PageTitle";
-
+export * from "./shared/Footer";
+export * from "./shared/Header";
+export * from "./shared/Sidebar";
+export * from "./shared/PageTitle";
 
 

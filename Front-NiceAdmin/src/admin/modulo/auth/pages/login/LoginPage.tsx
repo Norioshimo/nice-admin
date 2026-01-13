@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Footer } from "../../../../components/Footer";
+import { Footer } from "../../../../components/shared/Footer";
 import { Loading } from "../../../../components";
 import { useAuthStore } from "../../store/auth.store";
 import Swal from "sweetalert2";
@@ -20,20 +20,20 @@ export const LoginPage = () => {
     const formData = new FormData(event.target as HTMLFormElement);
     const usuario = formData.get("usuario") as string;
     const clave = formData.get("clave") as string;
+ 
 
-    console.log(`usuario:  ${usuario}. clave: ${clave}`);
+    const returnData = await login(usuario, clave); 
 
-    const isValid = await login(usuario, clave);
-    console.log(`isValid: ${isValid}`);
-
-    if (isValid) {
+    if (returnData.get("valido")) {
       Swal.fire({
-        text: "Bienvenido/a",
+        text: returnData.get("message"),
         icon: "success",
         confirmButtonText: "OK",
-      }).then(() => {
-        navigate("/");
       });
+    } else {
+      if (returnData.get("message") != undefined) {
+        Swal.fire("Error de autenticación", returnData.get("message"), "error");
+      }
     }
 
     setIsPosting(false);

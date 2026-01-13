@@ -1,12 +1,14 @@
 import { Link } from "react-router";
+import { useAuthStore } from "../../modulo/auth/store/auth.store";
 
 export const Sidebar = () => {
+  const { logout } = useAuthStore();
+
   return (
     <>
       <aside id="sidebar" className="sidebar">
         <ul className="sidebar-nav" id="sidebar-nav">
-         
-         <li className="nav-item">
+          <li className="nav-item">
             <Link className="nav-link collapsed" to="/">
               <i className="bi bi-house"></i>
               <span>Home</span>
@@ -30,18 +32,17 @@ export const Sidebar = () => {
               data-bs-parent="#sidebar-nav"
             >
               <li>
-                <Link to={'/seguridad/usuarios'}>
+                <Link to={"/seguridad/usuarios"}>
                   <i className="bi bi-circle"></i>
                   <span>Usuarios</span>
                 </Link>
               </li>
-               <li>
-                <Link to={'/seguridad/programas'}>
+              <li>
+                <Link to={"/seguridad/programas"}>
                   <i className="bi bi-circle"></i>
                   <span>Programas</span>
                 </Link>
               </li>
-              
             </ul>
           </li>
 
@@ -62,18 +63,16 @@ export const Sidebar = () => {
               data-bs-parent="#sidebar-nav"
             >
               <li>
-                <Link to={'/mantenimiento/productos'}>
+                <Link to={"/mantenimiento/productos"}>
                   <i className="bi bi-circle"></i>
                   <span>Productos</span>
                 </Link>
-              </li> 
+              </li>
             </ul>
           </li>
- 
- 
 
           <li className="nav-item">
-            <Link className="nav-link collapsed" to="/auth/login">
+            <Link className="nav-link collapsed" to="/auth/login" onClick={logout}>
               <i className="bi bi-box-arrow-right"></i>
               <span>Cerrar Sesión</span>
             </Link>

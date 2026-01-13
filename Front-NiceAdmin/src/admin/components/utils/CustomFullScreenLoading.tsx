@@ -1,7 +1,7 @@
 export const CustomFullScreenLoading = () => {
   return (
     <>
-      <h1>Cargando Espere</h1> 
+      <h1>Cargando Espere...</h1> 
     </>
   );
 };
