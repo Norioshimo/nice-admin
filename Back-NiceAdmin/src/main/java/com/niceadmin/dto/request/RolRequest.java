@@ -14,5 +14,5 @@ public class RolRequest {
     private String nombre;
 
 
-    private List<@NotNull(message = "El ID del programa no puede ser nulo.")Long> programasList;
+    private List<RolprogramaRequest> rolprogramaList;
 }

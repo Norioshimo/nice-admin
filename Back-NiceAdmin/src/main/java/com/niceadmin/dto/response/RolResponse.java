@@ -21,5 +21,5 @@ public class RolResponse implements Serializable {
 
     private Date updateAt;
 
-    private List<Long> programasList;
+    private List<RolprogramaResponse> rolprogramaList;
 }

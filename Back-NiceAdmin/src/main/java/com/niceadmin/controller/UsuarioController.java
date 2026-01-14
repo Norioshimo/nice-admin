@@ -26,8 +26,10 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioMapper mapper;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private UsuarioService usuarioService;
 
@@ -64,7 +66,6 @@ public class UsuarioController {
         Optional<Usuario> optional = usuarioService.findById(id);
 
         if (optional.isEmpty()) {
-
             return ResponseEntity.ok(new ApiResponse<>(401, "No existe el registro para editar ", null));
         }
 

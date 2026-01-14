@@ -33,6 +33,29 @@ Ejemplo de Token generado
 }
 ```
 
+## Nota...
+- Repository = Acceso a datos. Responsabilidad.
+  - Persistir entidades
+  - Consultar la base de datos
+  - Encapsular SQL / JPQL / Criteria
+  - Abstraer la tecnología de persistencia (JPA, JDBC, Mongo, etc.)
+
+
+- Service = Lógica de negocio. Responsabilidad.
+  - Reglas del negocio
+  - Orquestar múltiples repositorios
+  - Manejo de transacciones
+  - Validaciones complejas
+  - Decisiones del sistema
+
+
+- Controller = Capa de entrada (adaptador). Responsabilidad.
+  - Recibir requests HTTP
+  - Leer @PathVariable, @RequestParam, @RequestBody
+  - Validar entrada básica (@Valid)
+  - Delegar al Service
+  - Construir la respuesta HTTP (ResponseEntity)
+
 
 
 

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,15 +42,15 @@ public class Rol implements Serializable {
     private Date updateAt;
 
 
-    @OneToMany(mappedBy = "rolId",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "rolId", cascade = CascadeType.ALL)
     //@JsonManagedReference //indica la parte “padre” que se serializa normalmente.
     @JsonIgnore
     private List<Usuario> usuarioList;
 
 
-    @OneToMany(mappedBy = "rolId",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "rolId", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Rolprograma> rolesprogramasList;
+    private List<Rolprograma> rolesprogramasList = new ArrayList<>();
 
 
     @PrePersist
@@ -62,4 +63,18 @@ public class Rol implements Serializable {
         this.updateAt = new Date();
     }
 
+
+    // Métodos de dominio
+    public void agregarRolPrograma(Rolprograma detalle) {
+        if (rolesprogramasList == null) {
+            rolesprogramasList = new ArrayList<>();
+        }
+        rolesprogramasList.add(detalle);
+        detalle.setRolId(this);
+    }
+
+    public void removerRolPrograma(Rolprograma detalle) {
+        rolesprogramasList.remove(detalle);
+        detalle.setRolId(null);
+    }
 }

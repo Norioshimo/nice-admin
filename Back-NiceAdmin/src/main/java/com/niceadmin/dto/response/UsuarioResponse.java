@@ -3,6 +3,7 @@ package com.niceadmin.dto.response;
 import lombok.*;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -10,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UsuarioResponse {
+public class UsuarioResponse  implements Serializable {
 
     private Long id;
 

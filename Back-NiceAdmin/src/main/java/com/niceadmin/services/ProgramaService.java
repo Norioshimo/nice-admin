@@ -10,4 +10,5 @@ public interface ProgramaService extends CommonService<Programa, ProgramasFilter
 
     public List<Programa> findAllById(List<Long> ids);
 
+    public Programa save(Programa entity);
 }

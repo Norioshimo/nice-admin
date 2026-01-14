@@ -16,12 +16,6 @@ public interface CommonService<E,F> {
     @Transactional
     public void deleteById(Long id);
 
-
     @Transactional(readOnly = true)
     public Optional<E> findById(Long id);
-
-    @Transactional
-    public E save(E entity);
-
-
 }

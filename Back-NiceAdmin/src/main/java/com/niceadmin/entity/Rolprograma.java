@@ -21,6 +21,14 @@ public class Rolprograma implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, name = "can_create")
+    private boolean canCreate;
+
+    @Column(nullable = false, name = "can_update")
+    private boolean canUpdate;
+
+    @Column(nullable = false, name = "can_delete")
+    private boolean canDelete;
 
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -31,14 +39,14 @@ public class Rolprograma implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updataAt;
 
-    @JoinColumn(name = "rol_id",referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    @NotNull(message = "Rol es requerido")
+    @JoinColumn(name = "rol_id", referencedColumnName = "id", nullable = false)// NOT NULL: En la base de datos.
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)// NOT NULL: a nivel de objeto
+    @NotNull(message = "Rol es requerido")// NOT NULL: Validador de entrada.
     //@JsonBackReference //indica la parte “hija” que se ignora al serializar, evitando el bucle.
     private Rol rolId;
 
-    @JoinColumn(name = "programa_id",referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "programa_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull(message = "Programa es requerido")
     //@JsonBackReference //indica la parte “hija” que se ignora al serializar, evitando el bucle.
     private Programa programaId;
