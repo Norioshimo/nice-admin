@@ -1,6 +1,7 @@
 package com.niceadmin.controller;
 
 import com.niceadmin.dto.filter.UsuariosFilter;
+import com.niceadmin.dto.request.UsuarioChangePasswordRequest;
 import com.niceadmin.dto.request.UsuarioRequest;
 import com.niceadmin.dto.request.UsuarioUpdateRequest;
 import com.niceadmin.dto.response.ApiResponse;
@@ -89,13 +90,27 @@ public class UsuarioController {
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
         Optional<Usuario> optional = usuarioService.findById(id);
         if (optional.isEmpty()) {
-            return ResponseEntity.ok(new ApiResponse<>(401, "Registro con el id " + id + " no encontado para eliminar", null));
+            return ResponseEntity.ok(new ApiResponse<>(404, "Registro con el id " + id + " no encontado para eliminar", null));
         } else {
             usuarioService.deleteById(id);
             return ResponseEntity.ok(new ApiResponse<>(200, "Registro con el id " + id + " Eliminado", null));
         }
     }
 
+    @PostMapping("change-password")
+    public ResponseEntity<?> actualizarClave(@Valid @RequestBody UsuarioChangePasswordRequest request) {
+        Optional<Usuario> uDb = usuarioService.findById(request.getId());
+
+        if (uDb.isEmpty()) {
+            return ResponseEntity.ok(new ApiResponse<>(404, "No existe el usuario con el di " + request.getId(), null));
+        }
+
+        Usuario u = uDb.get();
+        u.setClave(passwordEncoder.encode(request.getClave()));
+
+        u = usuarioService.save(u);
+        return ResponseEntity.ok(new ApiResponse<>(200, "Clave actualizado con éxito", u));
+    }
 
 
 }

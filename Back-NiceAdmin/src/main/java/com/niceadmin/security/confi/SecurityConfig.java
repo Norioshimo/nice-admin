@@ -39,7 +39,7 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()  // login, registro
+                        .requestMatchers("/api/auth/**").permitAll()  // login, registro. No validar el token
                         .requestMatchers("/api/programas/**").authenticated()
                         .requestMatchers("/api/usuarios/**").authenticated()
                         .requestMatchers("/api/roles/**").authenticated()

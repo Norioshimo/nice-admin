@@ -21,7 +21,6 @@ public class UsuarioServiceImp implements UsuarioService {
     @Autowired
     private UsuarioRepository repository;
 
-
     @Override
     public Page<Usuario> findAll(Pageable pageable, UsuariosFilter filter) {
         log.info("Recuperar lista de usuarios.");
@@ -48,4 +47,7 @@ public class UsuarioServiceImp implements UsuarioService {
     public Optional<Usuario>buscarUsurios(String usuario){
         return repository.buscarUsurios(usuario);
     }
+
+
+
 }
