@@ -79,10 +79,7 @@ export const LoginPage = () => {
                             className="form-control"
                             required
                             placeholder="Ingrese su usuario"
-                          />
-                          <div className="invalid-feedback">
-                            Please enter your username.
-                          </div>
+                          /> 
                         </div>
                       </div>
 
@@ -94,10 +91,7 @@ export const LoginPage = () => {
                           className="form-control"
                           placeholder="Ingrese su clave"
                           required
-                        />
-                        <div className="invalid-feedback">
-                          Please enter your password!
-                        </div>
+                        /> 
                       </div>
 
                       <div className="col-12">

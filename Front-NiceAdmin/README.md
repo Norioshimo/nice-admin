@@ -14,3 +14,9 @@
 
 
 
+# Notas
+- Store: Proposito
+- Hooks: Proposito
+- Actions: Proposito
+
+

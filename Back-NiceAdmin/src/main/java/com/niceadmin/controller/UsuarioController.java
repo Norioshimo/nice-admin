@@ -5,6 +5,7 @@ import com.niceadmin.dto.request.UsuarioChangePasswordRequest;
 import com.niceadmin.dto.request.UsuarioRequest;
 import com.niceadmin.dto.request.UsuarioUpdateRequest;
 import com.niceadmin.dto.response.ApiResponse;
+import com.niceadmin.dto.response.PerfilResponse;
 import com.niceadmin.entity.Usuario;
 import com.niceadmin.mapper.UsuarioMapper;
 import com.niceadmin.services.UsuarioService;
@@ -44,9 +45,25 @@ public class UsuarioController {
     public ResponseEntity<?> ver(@PathVariable(name = "id") Long id) {
         Optional<Usuario> optional = usuarioService.findById(id);
         if (optional.isEmpty()) {
-            return ResponseEntity.ok(new ApiResponse<>(401, "Registro con el id " + id + " no encontado", null));
+            return ResponseEntity.ok(new ApiResponse<>(404, "Registro con el id " + id + " no encontado", null));
         } else {
             return ResponseEntity.ok().body(new ApiResponse<>(200, "Registro con el id " + id + " encontado", optional.get()));
+        }
+    }
+
+
+    @GetMapping("/perfil/{id}")
+    public ResponseEntity<?> perfil(@PathVariable(name = "id") Long id) {
+        Optional<Usuario> optional = usuarioService.findById(id);
+        if (optional.isEmpty()) {
+            return ResponseEntity.ok(new ApiResponse<>(404, "Registro con el id " + id + " no encontado", null));
+        } else {
+
+            Usuario u=optional.get();
+
+            PerfilResponse pr=mapper.toPerfilDto(u);
+
+            return ResponseEntity.ok().body(new ApiResponse<>(200, "Registro con el id " + id + " encontado", pr));
         }
     }
 
@@ -67,7 +84,7 @@ public class UsuarioController {
         Optional<Usuario> optional = usuarioService.findById(id);
 
         if (optional.isEmpty()) {
-            return ResponseEntity.ok(new ApiResponse<>(401, "No existe el registro para editar ", null));
+            return ResponseEntity.ok(new ApiResponse<>(404, "No existe el registro para editar ", null));
         }
 
         Usuario eDb = optional.get();
@@ -97,7 +114,7 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("change-password")
+    @PutMapping("change-password")
     public ResponseEntity<?> actualizarClave(@Valid @RequestBody UsuarioChangePasswordRequest request) {
         Optional<Usuario> uDb = usuarioService.findById(request.getId());
 
@@ -109,7 +126,9 @@ public class UsuarioController {
         u.setClave(passwordEncoder.encode(request.getClave()));
 
         u = usuarioService.save(u);
-        return ResponseEntity.ok(new ApiResponse<>(200, "Clave actualizado con éxito", u));
+
+        PerfilResponse pr=mapper.toPerfilDto(u);
+        return ResponseEntity.ok(new ApiResponse<>(200, "Clave actualizado con éxito", pr));
     }
 
 

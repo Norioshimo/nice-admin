@@ -1,10 +1,15 @@
-import { PageTitle } from "../../../../components"
+import { PageTitle } from "../../../../components";
+import { ProgramaForm } from "./ProgramaForm";
 
- 
 export const ProgramaPage = () => {
   return (
     <>
-    <PageTitle title="Programas" breadcrumbItem={["Seguridad","Programas"]} />
-    ProgramaPage</>
-  )
-}
+      <PageTitle
+        title="Programas"
+        breadcrumbItem={["Seguridad", "Programas"]}
+      />
+
+      <ProgramaForm/>
+    </>
+  );
+};

@@ -6,6 +6,7 @@ export type ApiErrorType =
     | "FORBIDDEN"
     | "NOT_FOUND"
     | "SERVER_ERROR"
+    | "ERR_CONNECTION_REFUSED"
     | "HTTP_ERROR";
 
 
@@ -21,11 +22,10 @@ export const mensaje_api = (error: any): boolean => {
 
     const err = error as ApiError;
 
-    if (err.type === "NETWORK_ERROR") {
+    if (err.type === "NETWORK_ERROR") { 
         Swal.fire("Servidor caído", err.message, "error");
         return true;
-    }
-
+    } 
 
     if (err.type === "UNAUTHORIZED") {
         Swal.fire("Sesión expirada", err.message, "warning");

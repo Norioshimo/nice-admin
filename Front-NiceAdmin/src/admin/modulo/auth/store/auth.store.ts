@@ -10,6 +10,7 @@ interface AuthState {
     user: Usuario | null;
     token: string | null;
     authStatus: AuthStatus;
+    permissions: string[];// permisos que tiene el usuario logueado
 
     // Getters 
 
@@ -17,13 +18,15 @@ interface AuthState {
     login: (user: string, clave: string) => Promise<Map<string, any>>;
     logout: () => void;
     checkAuthStatus: () => Promise<boolean>;
+    hasPermission: (permission: string) => boolean;// Validar si tiene el permiso
 }
 
-export const useAuthStore = create<AuthState>()((set, _) => ({
+export const useAuthStore = create<AuthState>()((set, get) => ({
     // Implementación del store
     user: null,
     token: null,
     authStatus: 'checking',
+    permissions: [],
 
     // Getters
 
@@ -33,17 +36,17 @@ export const useAuthStore = create<AuthState>()((set, _) => ({
 
         const returnData = new Map();
         try {
- 
+
             const data = await loginAction(user, clave);
             console.log(data)
             returnData.set("message", data.message);
- 
-            if (data.status != 200) { 
+
+            if (data.status != 200) {
                 returnData.set("valido", false);
 
                 localStorage.removeItem('token');
-                set({ user: null, token: null, authStatus: 'not-authenticated' });
-            } else {
+                set({ user: null, token: null, permissions: [], authStatus: 'not-authenticated' });
+            } else {// Logueado
                 returnData.set("valido", true);
                 localStorage.setItem('token', data.data.token);
                 set({
@@ -52,6 +55,7 @@ export const useAuthStore = create<AuthState>()((set, _) => ({
                         nombre: data.data.nombre,
                         usuario: data.data.usuario
                     },
+                    permissions: [],//Asignar todos los permisos
                     token: data.data.token, authStatus: 'authenticated'
                 });
             }
@@ -83,6 +87,7 @@ export const useAuthStore = create<AuthState>()((set, _) => ({
                     usuario: data.usuario
                 },
                 token: data.token,
+                permissions: [],//Asignar todos los permisos
                 authStatus: 'authenticated',
             });
             console.log('authenticated')
@@ -92,10 +97,15 @@ export const useAuthStore = create<AuthState>()((set, _) => ({
             set({
                 user: undefined,
                 token: undefined,
+                permissions: [],
                 authStatus: 'not-authenticated',
             });
 
             return false;
         }
     },
+
+    hasPermission: (permission) => {
+        return get().permissions.includes(permission);
+    }
 }))

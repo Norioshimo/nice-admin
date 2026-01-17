@@ -39,6 +39,7 @@ export const Header = () => {
                 href="#"
                 data-bs-toggle="dropdown"
               >
+                <i className="bi bi-person-fill"></i>
                 <span className="d-none d-md-block dropdown-toggle ps-2">
                   {user?.usuario}
                 </span>

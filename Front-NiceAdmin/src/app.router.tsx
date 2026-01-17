@@ -7,7 +7,7 @@ import { HomePage } from "./admin/modulo/home/HomePage";
 import { LoginPage, PerfilPage } from "./admin/modulo/auth/pages";
 import { ProgramaPage, UsuariosPage } from "./admin/modulo/seguridad/pages";
 import { ProductoPage } from "./admin/modulo/mantenimiento/pages";
-import { NotFount } from "./admin/error";
+import { NotFount } from "./admin/error"; 
 
 const AdminLayout = lazy(() => import("./admin/modulo/layouts/AdminLayout"));
 const AuthLayout = lazy(() => import("./admin/modulo/layouts/AuthLayout"));
