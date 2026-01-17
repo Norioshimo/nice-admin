@@ -20,3 +20,9 @@
 - Actions: Proposito
 
 
+### Electron (Ver escritorio)
+- Ejecutar(desarrollo): npm run desktop
+- Ejecutar(Producción): 
+    -   npm run build
+    -   npm run dist
+
