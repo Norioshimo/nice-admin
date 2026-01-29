@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.desktop.ScreenSleepEvent;
 import java.util.Optional;
 
 
@@ -29,11 +30,16 @@ public class ProgramaController {
 
     @GetMapping("/pagina")
     public ResponseEntity<?> listar(Pageable pageable, ProgramasFilter filter) {
-        return ResponseEntity.ok(new ApiResponse<>(200, "Lista de usuarios", programaService.findAll(pageable, filter)));
+         return ResponseEntity.ok(new ApiResponse<>(200, "Lista de usuarios", programaService.findAll(pageable, filter)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> ver(@PathVariable(name = "id") Long id) {
+         /* try {
+            Thread.sleep(5000); // pausa de 1 segundo (1000 milisegundos)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         Optional<Programa> optional = programaService.findById(id);
         if (optional.isEmpty()) {
             return ResponseEntity.ok(new ApiResponse<>(401, "Registro con el id " + id + " no encontado", null));
@@ -47,7 +53,7 @@ public class ProgramaController {
         Programa entity = mapper.toEntity(request);
         entity = programaService.save(entity);
 
-        return ResponseEntity.ok(new ApiResponse<>(200, "Registro con el id creado con exito", entity));
+        return ResponseEntity.ok(new ApiResponse<>(200, "Registro con el id "+entity.getId()+" creado con exito", entity));
     }
 
     @PutMapping("/{id}")
@@ -69,6 +75,13 @@ public class ProgramaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
         Optional<Programa> optional = programaService.findById(id);
+
+       // try {
+        //    Thread.sleep(5000); // pausa de 1 segundo (1000 milisegundos)
+        //} catch (InterruptedException e) {
+       //     e.printStackTrace();
+        //}
+
         if (optional.isEmpty()) {
             return ResponseEntity.ok(new ApiResponse<>(401, "Registro con el id " + id + " no encontado para eliminar", null));
         } else {

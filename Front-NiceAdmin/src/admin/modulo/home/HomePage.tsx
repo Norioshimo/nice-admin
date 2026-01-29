@@ -1,11 +1,11 @@
-import { PageTitle } from "../../components";
+import { PageTitle } from "../../components/shared";
 
- 
-
-export const HomePage = () => {
+const HomePage = () => {
   return (
     <>
       <PageTitle title="Home" breadcrumbItem={[]} />
     </>
   );
 };
+
+export default HomePage;

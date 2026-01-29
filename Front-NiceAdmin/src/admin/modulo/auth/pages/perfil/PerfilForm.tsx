@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
-import { Loading } from "../../../../components";
-import type { PerfilResponse } from "../../interfaces";
-import Swal from "sweetalert2";
 import type { UseMutationResult } from "@tanstack/react-query";
+import Swal from "sweetalert2";
+
+import type { PerfilResponse } from "../../interfaces";
 import type { UpdatePasswordInput } from "../../actions";
+import { Loading } from "../../../../components/utils";
 
 export interface ChangePasswordForm {
   clave: string;
@@ -17,7 +18,7 @@ interface Props {
   // Methods
 }
 
-export const PerfilForm = ({ userPerfil, mutation }: Props) => {
+const PerfilForm = ({ userPerfil, mutation }: Props) => {
   const {
     register,
     handleSubmit,
@@ -234,7 +235,7 @@ export const PerfilForm = ({ userPerfil, mutation }: Props) => {
                       <div className="text-center">
                         <button
                           type="submit"
-                          className="btn btn-primary"
+                          className="btn btn-success btn-sm"
                           disabled={isSubmitting}
                         >
                           <Loading
@@ -254,3 +255,5 @@ export const PerfilForm = ({ userPerfil, mutation }: Props) => {
     </>
   );
 };
+
+export default PerfilForm;

@@ -5,6 +5,7 @@
 - Bootstrap Icon
 - React Router
 - React Tanstack Query
+- React Tanstack Table
 - React Form Hook
 - Axios
 - SweetAlert

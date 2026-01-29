@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from "react";
-import { Footer } from "../../../../components/shared/Footer";
-import { Loading } from "../../../../components";
-import { useAuthStore } from "../../store/auth.store";
-import Swal from "sweetalert2"; 
+import Swal from "sweetalert2";
 
-export const LoginPage = () => {
+import { useAuthStore } from "../../store/auth.store";
+import { Footer } from "../../../../components/shared/Footer";
+import { Loading } from "../../../../components/utils";
+
+const LoginPage = () => {
   const { login } = useAuthStore();
 
   const [isPosting, setIsPosting] = useState(false);
@@ -18,9 +19,8 @@ export const LoginPage = () => {
     const formData = new FormData(event.target as HTMLFormElement);
     const usuario = formData.get("usuario") as string;
     const clave = formData.get("clave") as string;
- 
 
-    const returnData = await login(usuario, clave); 
+    const returnData = await login(usuario, clave);
 
     if (returnData.get("valido")) {
       Swal.fire({
@@ -70,33 +70,35 @@ export const LoginPage = () => {
                       className="row g-3 needs-validation"
                       onSubmit={handleLogin}
                     >
-                      <div className="col-12">
-                        <label className="form-label">Usuario</label>
-                        <div className="input-group has-validation">
+                      <div className="col-md-12">
+                        <div className="form-floating">
                           <input
                             type="text"
                             name="usuario"
                             className="form-control"
                             required
                             placeholder="Ingrese su usuario"
-                          /> 
+                          />
+                          <label htmlFor="usuario">Usuario</label>
+                        </div>
+                      </div>
+
+                      <div className="col-md-12">
+                        <div className="form-floating">
+                          <input
+                            type="password"
+                            name="clave"
+                            className="form-control"
+                            placeholder="Ingrese su clave"
+                            required
+                          />
+                          <label htmlFor="usuario">Contraseña</label>
                         </div>
                       </div>
 
                       <div className="col-12">
-                        <label className="form-label">Contraseña</label>
-                        <input
-                          type="password"
-                          name="clave"
-                          className="form-control"
-                          placeholder="Ingrese su clave"
-                          required
-                        /> 
-                      </div>
-
-                      <div className="col-12">
                         <button
-                          className="btn btn-primary w-100"
+                          className="btn btn-success w-100 btn-sm"
                           type="submit"
                           disabled={isPosting}
                         >
@@ -115,3 +117,5 @@ export const LoginPage = () => {
     </>
   );
 };
+
+export default LoginPage;

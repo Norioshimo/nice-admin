@@ -1,15 +1,15 @@
 import { RouterProvider } from "react-router";
-import { appRouter } from "./app.router";
+import { appRouter } from "./routes/app.router";
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useAuthStore } from "./admin/modulo/auth/store/auth.store";
-import { CustomFullScreenLoading } from "./admin/components";
+import { useAuthStore } from "./admin/modulo/auth/store/auth.store"; 
 import type { PropsWithChildren } from "react";
 import { AuthGate } from "./admin/components/guards/AuthGate";
+import { CustomFullScreenLoading } from "./admin/components/utils";
  
 const queryClient = new QueryClient();
 

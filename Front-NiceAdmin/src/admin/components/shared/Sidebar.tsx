@@ -4,6 +4,8 @@ import { useAuthStore } from "../../modulo/auth/store/auth.store";
 export const Sidebar = () => {
   const { logout } = useAuthStore();
 
+  console.log(`Construir Sidebar`)
+
   return (
     <>
       <aside id="sidebar" className="sidebar">

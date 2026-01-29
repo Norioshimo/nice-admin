@@ -33,7 +33,7 @@ Ejemplo de Token generado
 }
 ```
 
-## Nota...
+## Nota... Arquitectura en Capas (Layered Architecture)
 - Repository = Acceso a datos. Responsabilidad.
   - Persistir entidades
   - Consultar la base de datos

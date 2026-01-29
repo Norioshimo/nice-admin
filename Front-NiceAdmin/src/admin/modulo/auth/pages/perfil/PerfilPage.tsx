@@ -1,9 +1,10 @@
-import { useAuthStore } from "../../store/auth.store";
-import { Loading, PageTitle } from "../../../../components";
-import { usePerfil } from "../../hooks";
-import { PerfilForm } from "./PerfilForm";
+import { useAuthStore } from "../../store/auth.store"; 
+import { usePerfil } from "../../hooks"; 
+import { Loading } from "../../../../components/utils";
+import { PageTitle } from "../../../../components/shared";
+import PerfilForm from "./PerfilForm";
 
-export const PerfilPage = () => {
+  const PerfilPage = () => {
   const { user } = useAuthStore();
 
   const { data: userPerfil, isPending, mutation } = usePerfil(user!.id);
@@ -18,3 +19,6 @@ export const PerfilPage = () => {
     </>
   );
 };
+
+
+export default PerfilPage;
