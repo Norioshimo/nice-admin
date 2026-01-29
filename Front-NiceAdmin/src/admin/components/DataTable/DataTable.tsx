@@ -9,8 +9,7 @@ import {
 } from "@tanstack/react-table";
  
 import { Pagination } from "./Pagination";
-import { PageSizeSelect } from "./PageSizeSelect";
-import { Filters } from "./Filters"; 
+import { PageSizeSelect } from "./PageSizeSelect"; 
 
 
 interface DataTableProps<T> {
@@ -27,10 +26,6 @@ interface DataTableProps<T> {
     onSortingChange: (updater: any) => void;
 
     loading?: boolean;
-
-
-    children: React.ReactNode;
-    onFilter: () => void;
 }
 
 
@@ -42,9 +37,7 @@ export function DataTable<T>({
   onPaginationChange,
   sorting,
   onSortingChange,
-  loading = false,
-  children,
-  onFilter,
+  loading = false,  
 }: DataTableProps<T>) {
   console.log(`Construir datatable`)
   const table = useReactTable({
@@ -74,7 +67,8 @@ export function DataTable<T>({
 
   return (
     <>
-      <Filters onFilter={onFilter}>{children}</Filters>
+      
+      
       <div className="table-responsive">
         <table className="table table-bordered table-hover">
           <thead>

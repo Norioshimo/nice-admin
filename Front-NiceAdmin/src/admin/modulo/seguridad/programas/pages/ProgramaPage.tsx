@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { PageTitle } from "../../../../components/shared";
 import FormLayout from "../../../layouts/FormLayout";
 import { useProgramas } from "../hooks/useProgramas";
@@ -12,7 +12,9 @@ import { ProgramaFilter } from "./ProgramaFilter";
 import { useNavigate } from "react-router";
 import { ConfirmAlert } from "../../../../components/alerts";
 import { useProgramaDelete } from "../hooks";
-import type { Programas } from "../interfaces";
+import type { Programas, ProgramasFilters } from "../interfaces";
+import { Filters } from "../../../../components/DataTable";
+import { useDebounce } from "use-debounce";
 
 const ProgramaPage = () => {
   const navigate = useNavigate();
@@ -23,18 +25,27 @@ const ProgramaPage = () => {
   });
   const [sorting, setSorting] = useState<SortingState>([]);
 
+  const [filters, setFilters] = useState<ProgramasFilters>({
+    nombre: undefined,
+    id: undefined,
+  });
+
   const sortParam = useMemo(() => {
     if (!sorting.length) return "id,desc";
     const { id, desc } = sorting[0];
     return `${id},${desc ? "desc" : "asc"}`;
   }, [sorting]);
 
-  const { data, isLoading } = useProgramas(
+  // Debounce de 1.5s
+  const [debouncedFilters] = useDebounce(filters, 1500);
+
+  const { data, isLoading, refetch } = useProgramas(
     pagination.pageIndex,
     pagination.pageSize,
     sortParam,
-  );
-
+    debouncedFilters,
+  ); 
+  
   const { mutation: mutationDelete } = useProgramaDelete();
 
   const handleEdit = useCallback((id: number) => {
@@ -59,8 +70,12 @@ const ProgramaPage = () => {
     navigate(`/seguridad/programas/new`);
   }, []);
 
+  // Filtrar con el botón de filtros
   const handleFilter = useCallback(() => {
     console.log("Filtrar Programa");
+
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+    refetch();
   }, []);
 
   const getColumns = (
@@ -76,8 +91,20 @@ const ProgramaPage = () => {
       enableColumnFilter: false,
       cell: ({ row }) => (
         <div className="d-flex gap-1">
-          <button className="btn btn-success btn-sm" onClick={() => onEdit(row.original.id)} title="Editar Registro"><i className="bi bi-pen"></i></button>
-          <button className="btn btn-success btn-sm" onClick={() => onDelete(row.original.id)} title="Eliminar Registro"><i className="bi bi-trash"></i></button>
+          <button
+            className="btn btn-success btn-sm"
+            onClick={() => onEdit(row.original.id)}
+            title="Editar Registro"
+          >
+            <i className="bi bi-pen"></i>
+          </button>
+          <button
+            className="btn btn-success btn-sm"
+            onClick={() => onDelete(row.original.id)}
+            title="Eliminar Registro"
+          >
+            <i className="bi bi-trash"></i>
+          </button>
         </div>
       ),
     },
@@ -87,6 +114,8 @@ const ProgramaPage = () => {
     () => getColumns(handleEdit, handleDelete),
     [handleEdit, handleDelete],
   );
+
+  const tableData = useMemo(() => data?.data.content ?? [], [data]);
 
   return (
     <>
@@ -98,19 +127,20 @@ const ProgramaPage = () => {
         showCreate
         onCreateClick={handleCreate}
       >
+        <Filters onFilter={handleFilter}>
+          <ProgramaFilter filters={filters} setFilters={setFilters} />
+        </Filters>
+
         <DataTable
           columns={columns}
-          data={data?.data.content ?? []}
+          data={tableData}
           totalElements={data?.data.totalElements ?? 0}
           pagination={pagination}
           onPaginationChange={setPagination}
           sorting={sorting}
           onSortingChange={setSorting}
           loading={isLoading}
-          onFilter={handleFilter}
-        >
-          <ProgramaFilter />
-        </DataTable>
+        />
       </FormLayout>
     </>
   );
