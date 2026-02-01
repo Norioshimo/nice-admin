@@ -1,4 +1,4 @@
-import { RouterProvider } from "react-router";
+ 
 import { appRouter } from "./routes/app.router";
 import {
   QueryClient,
@@ -10,6 +10,7 @@ import { useAuthStore } from "./admin/modulo/auth/store/auth.store";
 import type { PropsWithChildren } from "react";
 import { AuthGate } from "./admin/components/guards/AuthGate";
 import { CustomFullScreenLoading } from "./admin/components/utils";
+import { RouterProvider } from "react-router-dom";
  
 const queryClient = new QueryClient();
 

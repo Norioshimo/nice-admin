@@ -1,12 +1,12 @@
-import { useNavigate, useParams } from "react-router";
-import { PageTitle } from "../../../../components/shared";
+import { useNavigate, useParams } from "react-router-dom";
 import FormLayout from "../../../layouts/FormLayout";
 import { CustomFullScreenLoading } from "../../../../components/utils";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";  
+import { useEffect, useMemo } from "react";  
 import { usePrograma, useProgramaCreateUpdate } from "../hooks";
+import PageTitle from "../../../../components/shared/PageTitle";
 
 const schema = z.object({
   id: z.number().optional(),
@@ -16,8 +16,12 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const ProgramaForm = () => {
+
   const { id } = useParams();
   const navigate = useNavigate();
+  
+  const isEdit = !!id;
+  const breadcrumb = useMemo(() => ["Seguridad", "Programa", isEdit ? "Editar" : "Nuevo"], []);
 
   const {
     register,
@@ -31,7 +35,6 @@ const ProgramaForm = () => {
     },
   });
 
-  const isEdit = !!id;
 
   const { data: programa, isLoading } = usePrograma(id);
   const { mutation } = useProgramaCreateUpdate();
@@ -74,7 +77,7 @@ const ProgramaForm = () => {
     <>
       <PageTitle
         title="Programa"
-        breadcrumbItem={["Seguridad", "Programa", isEdit ? "Editar" : "Nuevo"]}
+        breadcrumbItem={breadcrumb}
       />
       <FormLayout
         title={isEdit ? "Editar Programa" : "Crear Programa"}

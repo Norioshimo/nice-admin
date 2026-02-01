@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { NavLink } from "react-router-dom";
 import { useAuthStore } from "../../modulo/auth/store/auth.store";
 
 export const Header = () => {
@@ -54,27 +54,27 @@ export const Header = () => {
                 </li>
 
                 <li>
-                  <Link
+                  <NavLink
                     to={"seguridad/perfil"}
                     className="dropdown-item d-flex align-items-center"
                   >
                     <i className="bi bi-person"></i>
                     <span>Mi Perfil</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
                   <hr className="dropdown-divider" />
                 </li>
 
                 <li>
-                  <Link
+                  <NavLink
                     className="dropdown-item d-flex align-items-center"
                     to={"/auth/login"}
                     onClick={logout}
                   >
                     <i className="bi bi-box-arrow-right"></i>
                     <span>Cerrar Sesión</span>
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </li>

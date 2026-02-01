@@ -1275,4 +1275,5 @@ table th:hover {
   display: flex;
   justify-content: end;
   align-items: center;
+  padding-bottom: 8px;
 }

@@ -8,7 +8,7 @@ import type {
 } from "@tanstack/react-table";
 import { DataTable } from "../../../../components/DataTable/DataTable";
 import { ProgramaFilter } from "./ProgramaFilter";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { ConfirmAlert } from "../../../../components/alerts";
 import { useProgramaDelete } from "../hooks";
 import type { Programas, ProgramasFilters } from "../interfaces";

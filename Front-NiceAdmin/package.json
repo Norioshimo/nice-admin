@@ -19,6 +19,7 @@
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.1",
     "react-router": "^7.11.0",
+    "react-router-dom": "^6.30.3",
     "sweetalert2": "^11.26.17",
     "use-debounce": "^10.1.0",
     "zod": "^4.3.6",

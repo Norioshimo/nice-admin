@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router";
+import React from "react"; 
+import { NavLink } from "react-router-dom";
 
 interface PageTitleProps {
   title: string;
@@ -24,7 +24,7 @@ const PageTitle = ({ title, breadcrumbItem }: PageTitleProps) => {
           <nav>
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
-                <Link to="/">Home</Link>
+                <NavLink to="/">Home</NavLink>
               </li>
               {breadcrumbItem.map((bci, index) => (
                 <li

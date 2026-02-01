@@ -1,5 +1,5 @@
-import { lazy } from "react";
-import { createHashRouter } from "react-router";
+import { lazy } from "react"; 
+import { createHashRouter } from "react-router-dom";
 
 import { PrivateRoute, PublicRoute } from "../admin/modulo/auth/guards";
  

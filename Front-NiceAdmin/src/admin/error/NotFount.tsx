@@ -1,5 +1,6 @@
-import { Link } from "react-router";
+import { NavLink } from "react-router-dom";
 
+ 
 const NotFount = () => {
   return (
     <>
@@ -8,11 +9,11 @@ const NotFount = () => {
           <h1>404</h1>
           <h2>The page you are looking for doesn't exist.</h2>
 
-          <Link to={"/"}>
+          <NavLink to={"/"}>
             <button type="button" className="btn btn-primary">
               Volver a inicio
             </button>
-          </Link>
+          </NavLink>
         </section>
       </div>
     </>

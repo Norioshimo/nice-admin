@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { NavLink } from "react-router-dom";
 import { useAuthStore } from "../../modulo/auth/store/auth.store";
 
 export const Sidebar = () => {
@@ -11,10 +11,10 @@ export const Sidebar = () => {
       <aside id="sidebar" className="sidebar">
         <ul className="sidebar-nav" id="sidebar-nav">
           <li className="nav-item">
-            <Link className="nav-link collapsed" to="/">
+            <NavLink className="nav-link collapsed" to="/">
               <i className="bi bi-house"></i>
               <span>Home</span>
-            </Link>
+            </NavLink>
           </li>
 
           <li className="nav-item">
@@ -34,16 +34,18 @@ export const Sidebar = () => {
               data-bs-parent="#sidebar-nav"
             >
               <li>
-                <Link to={"/seguridad/usuarios"}>
+                <NavLink to={"/seguridad/usuarios"}
+                className={({ isActive }) => (isActive ? "active" : "")}>
                   <i className="bi bi-circle"></i>
                   <span>Usuarios</span>
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link to={"/seguridad/programas"}>
+                <NavLink to={"/seguridad/programas"}
+                className={({ isActive }) => (isActive ? "active" : "")}>
                   <i className="bi bi-circle"></i>
                   <span>Programas</span>
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </li>
@@ -65,19 +67,20 @@ export const Sidebar = () => {
               data-bs-parent="#sidebar-nav"
             >
               <li>
-                <Link to={"/mantenimiento/productos"}>
+                <NavLink to={"/mantenimiento/productos"}
+                className={({ isActive }) => (isActive ? "active" : "")}>
                   <i className="bi bi-circle"></i>
                   <span>Productos</span>
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </li>
 
           <li className="nav-item">
-            <Link className="nav-link collapsed" to="/auth/login" onClick={logout}>
+            <NavLink className="nav-link collapsed" to="/auth/login" onClick={logout}>
               <i className="bi bi-box-arrow-right"></i>
               <span>Cerrar Sesión</span>
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </aside>
