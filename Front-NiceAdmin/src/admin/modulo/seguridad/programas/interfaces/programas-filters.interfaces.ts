@@ -1,7 +1,7 @@
 export interface ProgramasFilters {
     pageIndex?: number;
     pageSize?: number;
-    sorting?: string;
+    sort?: string;
     nombre?: string | undefined;
     id?: number | undefined;
 }

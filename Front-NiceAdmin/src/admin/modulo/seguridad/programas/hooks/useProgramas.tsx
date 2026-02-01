@@ -5,15 +5,15 @@ import type { ProgramasFilters } from "../interfaces";
 export const useProgramas = (
   pageIndex: number,
   pageSize: number,
-  sorting: string,
+  sort: string,
   params: ProgramasFilters = {},
 ) => {
   const query = useQuery({
-    queryKey: ["programas", pageIndex, pageSize, sorting, params],
+    queryKey: ["programas", pageIndex, pageSize, sort, params],
     queryFn: () =>
-      getProgramasAction({ pageIndex, pageSize, sorting, ...params }),
+      getProgramasAction({ pageIndex, pageSize, sort, ...params }),
     retry: false,
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 0.5, // 30 segundos
   });
 
   return {

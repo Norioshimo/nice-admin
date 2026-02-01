@@ -13,7 +13,7 @@ export const getProgramasAction = async (params: ProgramasFilters = {}): Promise
             params: {
                 pageIndex: 0,// Dato por defecto
                 pageSize: 10,// Dato por defecto
-                sorting: 'id,desc',// Dato por defcto
+                sort: 'id,desc',// Dato por defcto
                 ...params,// Se sobre escribe si hay datos de datos por defecto
             },
         });
