@@ -7,27 +7,25 @@ import {
   type ColumnDef,
   type SortingState,
 } from "@tanstack/react-table";
- 
-import { Pagination } from "./Pagination";
-import { PageSizeSelect } from "./PageSizeSelect"; 
 
+import { Pagination } from "./Pagination";
+import { PageSizeSelect } from "./PageSizeSelect";
 
 interface DataTableProps<T> {
-    columns: ColumnDef<T, any>[];
-    data: T[];
-    totalElements: number;
-    pagination: {
-        pageIndex: number;
-        pageSize: number;
-    };
-    onPaginationChange: (updater: any) => void;
+  columns: ColumnDef<T, any>[];
+  data: T[];
+  totalElements: number;
+  pagination: {
+    pageIndex: number;
+    pageSize: number;
+  };
+  onPaginationChange: (updater: any) => void;
 
-    sorting: SortingState;
-    onSortingChange: (updater: any) => void;
+  sorting: SortingState;
+  onSortingChange: (updater: any) => void;
 
-    loading?: boolean;
+  loading?: boolean;
 }
-
 
 export function DataTable<T>({
   columns,
@@ -37,9 +35,9 @@ export function DataTable<T>({
   onPaginationChange,
   sorting,
   onSortingChange,
-  loading = false,  
+  loading = false,
 }: DataTableProps<T>) {
-  console.log(`Construir datatable`)
+  console.log(`Construir datatable`);
   const table = useReactTable({
     data,
     columns,
@@ -67,8 +65,6 @@ export function DataTable<T>({
 
   return (
     <>
-      
-      
       <div className="table-responsive">
         <table className="table table-bordered table-hover">
           <thead>
@@ -82,6 +78,9 @@ export function DataTable<T>({
                       cursor: header.column.getCanSort()
                         ? "pointer"
                         : "default",
+                      width: header.column.columnDef.meta?.fixed
+                        ? header.column.getSize()
+                        : undefined,
                     }}
                   >
                     {flexRender(
@@ -115,7 +114,14 @@ export function DataTable<T>({
               table.getRowModel().rows.map((row) => (
                 <tr key={row.id}>
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id}>
+                    <td
+                      key={cell.id}
+                      style={
+                        cell.column.columnDef.meta?.fixed
+                          ? { width: cell.column.getSize() }
+                          : undefined
+                      }
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

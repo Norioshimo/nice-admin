@@ -44,8 +44,8 @@ const ProgramaPage = () => {
     pagination.pageSize,
     sortParam,
     debouncedFilters,
-  ); 
-  
+  );
+
   const { mutation: mutationDelete } = useProgramaDelete();
 
   const handleEdit = useCallback((id: number) => {
@@ -89,8 +89,10 @@ const ProgramaPage = () => {
       header: "Acciones",
       enableSorting: false,
       enableColumnFilter: false,
+      size: 85, 
+      meta: { fixed: true },
       cell: ({ row }) => (
-        <div className="d-flex gap-1">
+        <div className="d-flex align-items-center justify-content-center gap-1">
           <button
             className="btn btn-success btn-sm"
             onClick={() => onEdit(row.original.id)}
