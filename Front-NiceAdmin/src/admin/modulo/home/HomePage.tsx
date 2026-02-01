@@ -1,4 +1,6 @@
-import { PageTitle } from "../../components/shared";
+import PageTitle from "../../components/shared/PageTitle";
+
+ 
 
 const HomePage = () => {
   return (

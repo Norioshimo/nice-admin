@@ -13,7 +13,7 @@ export const useProgramas = (
     queryFn: () =>
       getProgramasAction({ pageIndex, pageSize, sort, ...params }),
     retry: false,
-    staleTime: 1000 * 60 * 0.5, // 30 segundos
+    staleTime: 1000 * 60 * 10, // 10 minutos
   });
 
   return {

@@ -1,14 +1,11 @@
-import { PageTitle } from "../../../../components/shared";
+import { useMemo } from "react";
+import PageTitle from "../../../../components/shared/PageTitle";
 
 const ProductoPage = () => {
-
-  
+  const breadcrumb = useMemo(() => ["Mantenimiento", "Productos"], []);
   return (
     <>
-      <PageTitle
-        title="Productos"
-        breadcrumbItem={["Mantenimiento", "Productos"]}
-      />
+      <PageTitle title="Productos" breadcrumbItem={breadcrumb} />
       ProductoPage
     </>
   );

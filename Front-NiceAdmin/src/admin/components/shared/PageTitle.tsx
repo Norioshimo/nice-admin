@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router";
 
 interface PageTitleProps {
@@ -5,8 +6,8 @@ interface PageTitleProps {
   breadcrumbItem: string[];
 }
 
-export const PageTitle = ({ title, breadcrumbItem }: PageTitleProps) => {
-  console.log('Construir PageTitle')
+const PageTitle = ({ title, breadcrumbItem }: PageTitleProps) => {
+  console.log("Construir PageTitle");
   return (
     <>
       <div
@@ -42,3 +43,5 @@ export const PageTitle = ({ title, breadcrumbItem }: PageTitleProps) => {
     </>
   );
 };
+
+export default React.memo(PageTitle);

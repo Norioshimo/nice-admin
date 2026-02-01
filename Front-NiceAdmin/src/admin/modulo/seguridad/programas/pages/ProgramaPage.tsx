@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { PageTitle } from "../../../../components/shared";
+import { useCallback, useEffect, useMemo, useState } from "react"; 
 import FormLayout from "../../../layouts/FormLayout";
 import { useProgramas } from "../hooks/useProgramas";
 import type {
@@ -15,6 +14,7 @@ import { useProgramaDelete } from "../hooks";
 import type { Programas, ProgramasFilters } from "../interfaces";
 import { Filters } from "../../../../components/DataTable";
 import { useDebounce } from "use-debounce";
+import PageTitle from "../../../../components/shared/PageTitle";
 
 const ProgramaPage = () => {
   const navigate = useNavigate();
@@ -118,10 +118,11 @@ const ProgramaPage = () => {
   );
 
   const tableData = useMemo(() => data?.data.content ?? [], [data]);
+  const breadcrumb = useMemo(() => ["Seguridad", "Programa"], []);
 
   return (
     <>
-      <PageTitle title="Programa" breadcrumbItem={["Seguridad", "Programa"]} />
+      <PageTitle title="Programa" breadcrumbItem={breadcrumb} />
 
       <FormLayout
         title="Listado de programas"

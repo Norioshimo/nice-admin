@@ -1,10 +1,13 @@
-import { useAuthStore } from "../../store/auth.store"; 
-import { usePerfil } from "../../hooks"; 
+import { useAuthStore } from "../../store/auth.store";
+import { usePerfil } from "../../hooks";
 import { Loading } from "../../../../components/utils";
-import { PageTitle } from "../../../../components/shared";
 import PerfilForm from "./PerfilForm";
+import PageTitle from "../../../../components/shared/PageTitle";
+import { useMemo } from "react";
 
-  const PerfilPage = () => {
+const PerfilPage = () => {
+  const breadcrumb = useMemo(() => ["Perfil"], []);
+
   const { user } = useAuthStore();
 
   const { data: userPerfil, isPending, mutation } = usePerfil(user!.id);
@@ -13,12 +16,11 @@ import PerfilForm from "./PerfilForm";
 
   return (
     <>
-      <PageTitle title="Perfil" breadcrumbItem={["Perfil"]} />
-      
+      <PageTitle title="Perfil" breadcrumbItem={breadcrumb} />
+
       <PerfilForm userPerfil={userPerfil} mutation={mutation} />
     </>
   );
 };
-
 
 export default PerfilPage;
