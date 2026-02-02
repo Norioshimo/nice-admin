@@ -56,7 +56,9 @@ export const Header = () => {
                 <li>
                   <NavLink
                     to={"seguridad/perfil"}
-                    className="dropdown-item d-flex align-items-center"
+                    className={({ isActive }) =>
+                      `dropdown-item d-flex align-items-center ${isActive ? "active" : ""}`
+                    }
                   >
                     <i className="bi bi-person"></i>
                     <span>Mi Perfil</span>

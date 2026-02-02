@@ -17,6 +17,8 @@ public class ProgramaSpecification{
         log.info("filtrar programas");
         return (root, query, cb) -> {
             log.info("Filtrar lista de programas?");
+
+            log.info("Filtro datos programa: "+f.toString());
             List<Predicate> predicates = new ArrayList<>();
 
             if (f.getNombre() != null) {
