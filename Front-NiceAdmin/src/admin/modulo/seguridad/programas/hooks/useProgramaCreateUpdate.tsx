@@ -1,10 +1,9 @@
-import { useMutation,  useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createUpdateProgramaAction } from "../actions";
 import type { Programas } from "../interfaces";
 
-
 export const useProgramaCreateUpdate = () => {
-  console.log(`useProgramaCreateUpdate`)
+  console.log(`useProgramaCreateUpdate`);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -13,15 +12,15 @@ export const useProgramaCreateUpdate = () => {
       // Invalidar caché
       queryClient.invalidateQueries({ queryKey: ["programas"] });
       queryClient.invalidateQueries({
-        queryKey: ["programa", { id: programa.id }],
+        queryKey: ["programa", programa.id.toString()],
       });
 
       // Actualizar queryData
-      queryClient.setQueryData(["programa", { id: programa.id }], programa);
+      queryClient.setQueryData(["programa", programa.id.toString()], programa);
     },
   });
 
   return {
     mutation,
   };
-}; 
+};

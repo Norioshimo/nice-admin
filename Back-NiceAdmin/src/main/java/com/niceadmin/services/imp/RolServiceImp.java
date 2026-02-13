@@ -67,12 +67,18 @@ public class RolServiceImp implements RolService {
         } else {// Rol Nuevo
             rol = Rol.builder()
                     .nombre(rolRequest.getNombre())
+                    .estado(rolRequest.isEstado())
+                    .descripcion(rolRequest.getDescripcion())
                     .build();
         }
 
 
         if (rolRequest.getRolprogramaList() == null) {// Si recibí vacio. Se elimina todo en la base de datos.
-            rol.getRolesprogramasList().clear();
+            if (rol.getRolesprogramasList() == null) {
+                rol.setRolesprogramasList(new ArrayList<>());
+            } else {
+                rol.getRolesprogramasList().clear();
+            }
         } else {
             // Recorrer los detalles entrantes
             List<Rolprograma> nuevo = new ArrayList<>();
@@ -108,12 +114,17 @@ public class RolServiceImp implements RolService {
         }
 
         // 4️⃣ Eliminar detalles que no están en la request
-        Set<Long> idsRequest = rolRequest.getRolprogramaList().stream()
-                .filter(d -> d.getId() != null)
-                .map(RolprogramaRequest::getId)
-                .collect(Collectors.toSet());
+        if (rolRequest.getRolprogramaList() != null) {
 
-        rol.getRolesprogramasList().removeIf(detalle -> detalle.getId() != null && !idsRequest.contains(detalle.getId()));
+            Set<Long> idsRequest = rolRequest.getRolprogramaList().stream()
+                    .filter(d -> d.getId() != null)
+                    .map(RolprogramaRequest::getId)
+                    .collect(Collectors.toSet());
+
+            rol.getRolesprogramasList().removeIf(detalle -> detalle.getId() != null && !idsRequest.contains(detalle.getId()));
+        }else {
+            rolRequest.setRolprogramaList(new ArrayList<>());
+        }
 
         return rol;
     }

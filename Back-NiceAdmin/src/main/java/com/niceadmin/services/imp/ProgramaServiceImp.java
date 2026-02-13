@@ -31,6 +31,12 @@ public class ProgramaServiceImp implements ProgramaService {
         return repository.findAll(spec, pageable);
     }
 
+    @Override
+    public List<Programa> findAll() {
+        return repository.findAll();
+    }
+
+
     @Transactional
     public Programa save(Programa entity) {
         return repository.save(entity);

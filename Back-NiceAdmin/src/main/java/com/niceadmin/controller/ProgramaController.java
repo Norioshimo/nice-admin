@@ -3,6 +3,7 @@ package com.niceadmin.controller;
 import com.niceadmin.dto.filter.ProgramasFilter;
 import com.niceadmin.dto.request.ProgramaRequest;
 import com.niceadmin.dto.response.ApiResponse;
+import com.niceadmin.dto.response.ProgramaResponse;
 import com.niceadmin.entity.Programa;
 import com.niceadmin.mapper.ProgramaMapper;
 import com.niceadmin.services.ProgramaService;
@@ -15,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.desktop.ScreenSleepEvent;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -30,7 +33,24 @@ public class ProgramaController {
 
     @GetMapping("/pagina")
     public ResponseEntity<?> listar(Pageable pageable, ProgramasFilter filter) {
-         return ResponseEntity.ok(new ApiResponse<>(200, "Lista de usuarios", programaService.findAll(pageable, filter)));
+        //System.out.println("Listar");
+        //System.out.println(pageable.first().getOffset());
+        //System.out.println(pageable.first().getPageSize());
+        //System.out.println(pageable.first().getPageNumber());
+        return ResponseEntity.ok(new ApiResponse<>(200, "Lista de propramas", programaService.findAll(pageable, filter)));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> listarAll() {
+
+        List<ProgramaResponse> listaPrograma = programaService.findAll().stream().map(p -> {
+            return ProgramaResponse.builder()
+                    .id(p.getId())
+                    .nombre(p.getNombre())
+                    .build();
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(new ApiResponse<>(200, "Lista de todos los propramas", listaPrograma));
     }
 
     @GetMapping("/{id}")
@@ -51,15 +71,25 @@ public class ProgramaController {
     @PostMapping
     public ResponseEntity<?> crear(@Valid @RequestBody ProgramaRequest request) {
         Programa entity = mapper.toEntity(request);
+        /*try {
+            Thread.sleep(5000); // pausa de 1 segundo (1000 milisegundos)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         entity = programaService.save(entity);
 
-        return ResponseEntity.ok(new ApiResponse<>(200, "Registro con el id "+entity.getId()+" creado con exito", entity));
+        return ResponseEntity.ok(new ApiResponse<>(200, "Registro con el id " + entity.getId() + " creado con exito", entity));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editar(@Valid @RequestBody ProgramaRequest request, @PathVariable(name = "id") Long id) {
         Optional<Programa> optional = programaService.findById(id);
 
+        /*try {
+            Thread.sleep(5000); // pausa de 1 segundo (1000 milisegundos)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         if (optional.isEmpty()) {
             return ResponseEntity.ok(new ApiResponse<>(401, "No existe el registro para editar ", null));
         }
@@ -76,10 +106,10 @@ public class ProgramaController {
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
         Optional<Programa> optional = programaService.findById(id);
 
-       // try {
+        // try {
         //    Thread.sleep(5000); // pausa de 1 segundo (1000 milisegundos)
         //} catch (InterruptedException e) {
-       //     e.printStackTrace();
+        //     e.printStackTrace();
         //}
 
         if (optional.isEmpty()) {

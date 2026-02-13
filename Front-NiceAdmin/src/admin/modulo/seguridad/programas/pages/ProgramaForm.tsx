@@ -36,7 +36,7 @@ const ProgramaForm = () => {
   });
 
 
-  const { data: programa, isLoading } = usePrograma(id);
+  const { data: programa, isFetching } = usePrograma(id);
   const { mutation } = useProgramaCreateUpdate();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const ProgramaForm = () => {
     }
   }, [programa, reset]);
 
-  if (isEdit && isLoading) {
+  if (isEdit && isFetching) {
     return <CustomFullScreenLoading />;
   }
 
@@ -85,6 +85,7 @@ const ProgramaForm = () => {
         showSave={true}
         onCancelClick={handleCancel}
         onSaveClick={handleSubmit(onSubmit)}
+        isCreating={mutation.isPending}
       >
         <div className="row">
           {isEdit && (

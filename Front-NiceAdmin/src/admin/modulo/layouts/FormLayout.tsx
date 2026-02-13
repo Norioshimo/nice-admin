@@ -2,8 +2,11 @@ import React from "react";
 import { Loading } from "../../components/utils";
 
 interface Props {
+  // Parametros
   title: string;
   children: React.ReactNode;
+  isCreating?: boolean;
+  classContainer?:boolean;
 
   // Control de visibilidad
   showFilter?: boolean;
@@ -20,6 +23,8 @@ interface Props {
 const FormLayout = ({
   title,
   children,
+  isCreating = false,
+  classContainer=false,
   showFilter = false,
   showCreate = false,
   showSave = false,
@@ -30,7 +35,7 @@ const FormLayout = ({
 }: Props) => {
   return (
     <>
-      <section className="section">
+      <section className={`section ${classContainer?'container':''}`}>
         <div className="row">
           <div className="col-lg-12">
             <div className="card">
@@ -78,8 +83,9 @@ const FormLayout = ({
                           <button
                             type="submit"
                             className="btn btn-success btn-sm"
+                            disabled={isCreating}
                           >
-                            <Loading isPosting={false} texto="Guardar" />
+                            <Loading isPosting={isCreating} texto="Guardar" />
                           </button>
                         )}
 
@@ -88,6 +94,7 @@ const FormLayout = ({
                             type="button"
                             className="btn btn-success btn-sm"
                             onClick={onCancelClick}
+                            disabled={isCreating}
                           >
                             Cancelar
                           </button>

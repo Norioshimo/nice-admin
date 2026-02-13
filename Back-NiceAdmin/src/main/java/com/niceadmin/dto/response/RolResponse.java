@@ -16,6 +16,8 @@ public class RolResponse implements Serializable {
     private Long id;
 
     private String nombre;
+    private boolean estado;
+    private String descripcion;
 
     private Date createAt;
 

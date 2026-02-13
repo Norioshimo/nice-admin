@@ -3,5 +3,5 @@ export * from "./create-update-programa.action";
 export * from "./get-programa.action";
 export * from "./get-programas.action";
 
-
+export * from './get-programas-full.action'
 

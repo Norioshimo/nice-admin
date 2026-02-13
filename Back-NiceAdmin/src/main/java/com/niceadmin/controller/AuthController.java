@@ -69,6 +69,11 @@ public class AuthController {
             return ResponseEntity.status(401).body("Token faltante o inválido");
         }
 
+        /*try {
+            Thread.sleep(5000); // pausa de 1 segundo (1000 milisegundos)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         String token = authHeader.substring(7); // quitar "Bearer "
 
         Long userid=jwtService.extrarUserId(token);

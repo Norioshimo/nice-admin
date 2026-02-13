@@ -59,6 +59,15 @@ export const Sidebar = () => {
                   <span>Programas</span>
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to={"/seguridad/roles"}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  <i className="bi bi-circle"></i>
+                  <span>Roles</span>
+                </NavLink>
+              </li>
             </ul>
           </li>
 

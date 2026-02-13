@@ -1,15 +1,15 @@
 import Swal from "sweetalert2";
 import { api, mensaje_api } from "../../../../../api";
-import type { ProgramasFilters, ProgramasPageResponse } from "../interfaces";
+import type { RolesFilters, RolesPageResponse } from "../interfaces";
 
 
 
-export const getProgramasAction = async (params: ProgramasFilters = {}): Promise<ProgramasPageResponse> => {
+export const getRolesAction = async (params: RolesFilters = {}): Promise<RolesPageResponse> => {
 
     try {
-        console.log(`getProgramasAction: ${JSON.stringify(params)}`) 
+        console.log(`getRolesAction: ${JSON.stringify(params)}`)
 
-        const { data } = await api.get(`/programas/pagina`, {
+        const { data } = await api.get(`/roles/pagina`, {
             params: {
                 page: 0,// Dato por defecto
                 size: 10,// Dato por defecto

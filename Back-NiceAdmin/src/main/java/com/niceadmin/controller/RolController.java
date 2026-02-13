@@ -42,7 +42,7 @@ public class RolController {
     public ResponseEntity<?> ver(@PathVariable(name = "id") Long id) {
         Optional<Rol> optional = rolService.findById(id);
         if (optional.isEmpty()) {
-            return ResponseEntity.ok(new ApiResponse<>(401, "Registro con el id " + id + " no encontado", null));
+            return ResponseEntity.ok(new ApiResponse<>(404, "Registro con el id " + id + " no encontado", null));
         }
 
         Rol rol = optional.get();
@@ -56,6 +56,11 @@ public class RolController {
     @PostMapping
     public ResponseEntity<?> crear(@Valid @RequestBody RolRequest request) {
         log.info("Crear rol");
+        /*try {
+            Thread.sleep(5000); // pausa de 1 segundo (1000 milisegundos)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         Rol rol = null;
         try {
             rol = this.rolService.crear(request);
@@ -99,7 +104,7 @@ public class RolController {
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
         Optional<Rol> optional = rolService.findById(id);
         if (optional.isEmpty()) {
-            return ResponseEntity.ok(new ApiResponse<>(401, "Registro con el id " + id + " no encontado para eliminar", null));
+            return ResponseEntity.ok(new ApiResponse<>(404, "Registro con el id " + id + " no encontado para eliminar", null));
         } else {
             rolService.deleteById(id);
             return ResponseEntity.ok(new ApiResponse<>(200, "Registro con el id " + id + " Eliminado", null));

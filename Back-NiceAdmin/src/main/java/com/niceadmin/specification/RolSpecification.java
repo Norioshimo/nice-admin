@@ -27,6 +27,15 @@ public class RolSpecification {
                 );
             }
 
+            if (f.getId() != null) {
+                log.info("Fitlar por ID: " + f.getId());
+                predicates.add(
+                        cb.equal(
+                                root.get("id"),f.getId()
+                        )
+                );
+            }
+
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }

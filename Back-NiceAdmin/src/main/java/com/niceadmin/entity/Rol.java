@@ -52,6 +52,13 @@ public class Rol implements Serializable {
     @JsonIgnore
     private List<Rolprograma> rolesprogramasList = new ArrayList<>();
 
+    @Column(name = "estado")
+    @NotNull(message = "Estado es campo obligatorio")
+    private boolean estado;
+
+    @Column(name = "descripcion")
+    @Size(max=2000)
+    private String descripcion;
 
     @PrePersist
     public void prePersist() {

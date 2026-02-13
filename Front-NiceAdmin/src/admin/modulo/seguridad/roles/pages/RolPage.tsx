@@ -1,22 +1,19 @@
 import { useCallback, useMemo, useState } from "react";
+import PageTitle from "../../../../components/shared/PageTitle";
 import FormLayout from "../../../layouts/FormLayout";
-import { useProgramas } from "../hooks/useProgramas";
+import { useNavigate } from "react-router-dom";
+import { DataTable, Filters } from "../../../../components/DataTable";
 import type {
   ColumnDef,
   PaginationState,
   SortingState,
 } from "@tanstack/react-table";
-import { DataTable } from "../../../../components/DataTable/DataTable";
-import { ProgramaFilter } from "./ProgramaFilter";
-import { useNavigate } from "react-router-dom";
+import type { Roles, RolesFilters } from "../interfaces";
+import { useRolDelete, useRoles } from "../hooks";
 import { ConfirmAlert } from "../../../../components/alerts";
-import { useProgramaDelete } from "../hooks";
-import type { Programas, ProgramasFilters } from "../interfaces";
-import { Filters } from "../../../../components/DataTable";
-import { useDebounce } from "use-debounce";
-import PageTitle from "../../../../components/shared/PageTitle";
+import { RolFilter } from "./RolFilter";
 
-const ProgramaPage = () => {
+const RolPage = () => {
   const navigate = useNavigate();
 
   const [pagination, setPagination] = useState<PaginationState>({
@@ -25,10 +22,12 @@ const ProgramaPage = () => {
   });
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const [filters, setFilters] = useState<ProgramasFilters>({
+  const [filters, setFilters] = useState<RolesFilters>({
     nombre: undefined,
     id: undefined,
   });
+
+  const [appliedFilters, setAppliedFilters] = useState<RolesFilters>(filters);
 
   const sortParam = useMemo(() => {
     if (!sorting.length) return "id,desc";
@@ -36,27 +35,24 @@ const ProgramaPage = () => {
     return `${id},${desc ? "desc" : "asc"}`;
   }, [sorting]);
 
-  // Debounce de 1.5s
-  const [debouncedFilters] = useDebounce(filters, 1500);
-
-  const { data, isFetching, refetch } = useProgramas({
+  const { data, isFetching } = useRoles({
     page: pagination.pageIndex,
     size: pagination.pageSize,
     sort: sortParam,
-    params: debouncedFilters,
+    params: appliedFilters,
   });
 
-  const { mutation: mutationDelete } = useProgramaDelete();
+  const { mutation: mutationDelete } = useRolDelete();
 
   const handleEdit = useCallback((id: number) => {
-    navigate(`/seguridad/programas/${id}/edit`);
+    navigate(`/seguridad/roles/${id}/edit`);
   }, []);
 
   const handleDelete = useCallback(
     async (id: number) => {
       const confirmed = await ConfirmAlert({
-        title: "Eliminar programa",
-        text: "El programa será eliminado definitivamente",
+        title: "Eliminar Rol",
+        text: "El rol será eliminado definitivamente",
       });
 
       if (!confirmed) return;
@@ -67,23 +63,38 @@ const ProgramaPage = () => {
   );
 
   const handleCreate = useCallback(() => {
-    navigate(`/seguridad/programas/new`);
+    navigate(`/seguridad/roles/new`);
   }, []);
 
   // Filtrar con el botón de filtros
   const handleFilter = useCallback(() => {
-    console.log("Filtrar Programa");
+    console.log("Filtrar Roles");
+    setAppliedFilters(filters);
 
     setPagination((prev) => ({ ...prev, pageIndex: 0 }));
-    refetch();
-  }, []);
+  }, [filters]);
 
   const getColumns = (
     onEdit: (id: number) => void,
     onDelete: (id: number) => void,
-  ): ColumnDef<Programas>[] => [
+  ): ColumnDef<Roles>[] => [
     { header: "ID", accessorKey: "id" },
     { header: "Nombre", accessorKey: "nombre" },
+    {
+      header: "Estado",
+      accessorKey: "estado",
+      size: 120,
+      meta: { fixed: true },
+      cell: ({ row }) => (
+        <span
+          className={
+            row.original.estado ? "badge bg-success" : "badge bg-danger"
+          }
+        >
+          {row.original.estado ? "Activo" : "Inactivo"}
+        </span>
+      ),
+    },
     {
       id: "acciones",
       header: "Acciones",
@@ -118,20 +129,20 @@ const ProgramaPage = () => {
   );
 
   const tableData = useMemo(() => data?.data.content ?? [], [data]);
-  const breadcrumb = useMemo(() => ["Seguridad", "Programa"], []);
+  const breadcrumb = useMemo(() => ["Seguridad", "Rol"], []);
 
   return (
     <>
-      <PageTitle title="Programa" breadcrumbItem={breadcrumb} />
+      <PageTitle title="Rol" breadcrumbItem={breadcrumb} />
 
       <FormLayout
-        title="Listado de programas"
+        title="Listado de roles"
         showFilter
         showCreate
         onCreateClick={handleCreate}
       >
-        <Filters onFilter={handleFilter}>
-          <ProgramaFilter filters={filters} setFilters={setFilters} />
+        <Filters onFilter={handleFilter} showFilterBotton={true}>
+          <RolFilter filters={filters} setFilters={setFilters} />
         </Filters>
 
         <DataTable
@@ -149,4 +160,4 @@ const ProgramaPage = () => {
   );
 };
 
-export default ProgramaPage;
+export default RolPage;

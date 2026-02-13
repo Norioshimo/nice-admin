@@ -11,6 +11,7 @@ import org.mapstruct.MappingTarget;
 public interface RolprogramaMapper {
 
     @Mapping(source = "programaId.id", target = "programaId")
+    @Mapping(source = "programaId", target = "programaResponse")
     RolprogramaResponse toDto(Rolprograma entity);
 
     @Mapping(source = "programaId", target = "programaId.id")

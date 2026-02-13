@@ -16,4 +16,7 @@ public class RolprogramaResponse implements Serializable {
     private boolean canUpdate;
     private boolean canDelete;
 
+
+    private ProgramaResponse programaResponse;
+
 }
