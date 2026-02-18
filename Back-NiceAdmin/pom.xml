@@ -11,7 +11,7 @@
 
 	<groupId>com.niceadmin</groupId>
 	<artifactId>nice-admin</artifactId>
-	<version>1.0.0T</version>
+	<version>1.0.0</version>
 	<name>nice-admin</name>
 	<description>Proyecto Back End de Nice Admin</description>
 

@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: db_nice_admin
     volumes:
       - ./data_postgres:/var/lib/postgresql/data
     ports:
@@ -24,6 +24,20 @@ services:
       - "81:80"
     volumes:
       - ./data_pgadmin:/var/lib/pgadmin
+    networks:
+      - red_postgres_compartida
+
+  nice-admin:
+    build: .
+    container_name: nice-admin-back
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/db_nice_admin
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
     networks:
       - red_postgres_compartida
 

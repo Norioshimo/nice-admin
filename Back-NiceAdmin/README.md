@@ -18,6 +18,11 @@ docker compose up -d
 mvn spring-boot:run
 ```
 
+Ejecutar con docker. Compiar y levantar backend con la base de datos.
+```
+docker compose up --build -d
+````
+
 ## JWT
 Los tokens están firmados con HMAC SHA-256 usando una clave secreta de la aplicación: El token y expiration se configura en el application.yml.
 
